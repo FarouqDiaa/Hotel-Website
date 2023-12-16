@@ -49,7 +49,7 @@
         <h1 style="text-align: center; color: #FFF;">About Us</h1>
         <div class="container mt-5">
             <div class="row">
-                    <p>BIO test</p>
+                    <p>BIO test commit</p>
             </div>
         </div>
         <br><br><br><br>
