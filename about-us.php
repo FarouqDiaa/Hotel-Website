@@ -49,7 +49,7 @@
         <h1 style="text-align: center; color: #FFF;">About Us</h1>
         <div class="container mt-5">
             <div class="row">
-                    <p>BIO</p>
+                    <p>BIO test</p>
             </div>
         </div>
         <br><br><br><br>
