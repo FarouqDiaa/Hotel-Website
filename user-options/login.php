@@ -55,7 +55,7 @@
             $username = $_POST['username'];
             $pass = $_POST['pass'];
             
-            $sql = "SELECT * FROM `has_account` WHERE `username` = '$username'";
+            $sql = "SELECT * FROM `account` WHERE `username` = '$username'";
 
             $result = $conn->query($sql);
 
@@ -65,9 +65,9 @@
                     $_SESSION['loggedin'] = true;
                     $_SESSION['username'] = $username;
                     $_SESSION['id'] = $row['ID'] ;
-                    $_SESSION['usertype'] = $row['usertype'];
+                    $_SESSION['usertype'] = $row['type'];
                     if ($_SESSION['ID'] == 0){
-                    header("Location: userprofile.php?id=". $row["ID"] ."");
+                    header("Location: guest-profile.php?id=". $row["ID"] ."");
                 }
                 else{
                     header("Location: ../index.php?id=". $row["ID"] ."");

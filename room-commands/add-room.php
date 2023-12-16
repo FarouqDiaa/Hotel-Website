@@ -12,8 +12,8 @@
 <body>
     
 <?php 
-include '../includes/connection.php';
-include '../includes/navbar.php';
+include '../tools/connection.php';
+include '../tools/navbar.php';
 /*
 if(isset($_POST["room_submit"])){
     $course_name = $_POST["course_name"];
@@ -23,7 +23,7 @@ if(isset($_POST["room_submit"])){
     $course_desc = $_POST["course_desc"];
     $course_image = $_FILES["course_image"]["name"];
     $c_img_tmp = $_FILES["course_image"]["tmp_name"];
-    $folder = "../coursesimg/".$course_image;
+    $folder = "../images/".$course_image;
 
     $sql = "INSERT INTO courses (course_name, course_price, course_desc, course_image, course_code) VALUES ('$course_name', $course_price, '$course_desc', '$course_image', '$course_code')";
 
