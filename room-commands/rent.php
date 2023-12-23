@@ -13,7 +13,7 @@ if (isset($_GET['cid'])) {
     $meal_type=$_POST['meal_type'];//TODO :make textbox called meal_type take the meal_type from user
     $checkin_date = date("Y-m-d"); // checkin_date is today
     $checkout_date=$_POST['checkout_date'];//TODO :make textbox called checkout_date take the checkout_date from user
-    $address=$_POST['address'];//TODO :make textbox called address take the address from user
+    $address=$_POST['address'];//TODO:make textbox called address take the address from user
 
     
 
