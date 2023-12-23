@@ -28,7 +28,7 @@
               <tbody>";
         
         while ($row = $result->fetch_assoc()) {
-            echo "<tr><td>" . $row["Booking_ID"] . "</td><td>" . $row["payment"] . "</td></tr>". $row["meal_type"] . "</td></tr>". $row["checkin_date"] . "</td></tr>". $row["checkout_date"] . "</td></tr>". $row["address"] . "</td></tr>";
+            echo "<tr><td>" . $row["Booking_ID"] . "</td><td>" . $row["payment"] . "</td></td>". $row["meal_type"] . "</td></td>". $row["checkin_date"] . "</td></td>". $row["checkout_date"] . "</td></td>". $row["address"] . "</td></tr>";
             $n++;
         }
         echo "</tbody></table>";
