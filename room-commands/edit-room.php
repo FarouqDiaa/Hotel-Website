@@ -26,7 +26,7 @@
             $checkout_date=$_POST['checkout_date'];//TODO :make textbox called checkout_date take the checkout_date from user
             $address=$_POST['address'];//TODO:make textbox called address take the address from user
                 
-            $sql = "UPDATE `booking` SET `payment`=$payment_money,`meal_type`='$meal_type',`checkout_date`='$checkout_date',`address`='$address',`guest_ID`='$guestid' WHERE Booking_ID=$booking_id;";
+            $sql = "UPDATE `booking` SET `payment`=$payment_money,`meal_type`='$meal_type',`checkout_date`='$checkout_date',`address`='$address',`guest_ID`=$guestid WHERE Booking_ID=$booking_id;";
 
 
             if($conn->query($sql) == true){

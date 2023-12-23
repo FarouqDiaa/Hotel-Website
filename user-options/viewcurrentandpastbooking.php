@@ -29,7 +29,7 @@
         
         while ($row = $result->fetch_assoc()) {
             echo "<tr><td>" . $row["Booking_ID"] . "</td><td>" . $row["payment"] . "</td></td>". $row["meal_type"] . "</td></td>". $row["checkin_date"] . "</td></td>". $row["checkout_date"] . "</td></td>". $row["address"] . "</td></tr>";
-            $n++;
+            
         }
         echo "</tbody></table>";
         
@@ -39,7 +39,7 @@
     }
     
 ?>
-
+<!-- update for viewcurrent page -->
 
 <!DOCTYPE html>
 <html lang="en">

@@ -22,7 +22,7 @@ if (isset($_GET['cid'])) {
     $checkResult = $conn->query($checkEnrollmentQuery);
 
     if ($checkResult->num_rows == 0) { // if checked room is empty make the booking for the user
-        $insertQuery = "INSERT INTO `booking`( `payment`, `meal_type`, `checkin_date`, `checkout_date`, `address`, `guest_ID`) VALUES ('$payment_money','$meal_type','$checkin_date','$checkout_date','$address',$guestid);";
+        $insertQuery = "INSERT INTO `booking`( `payment`, `meal_type`, `checkin_date`, `checkout_date`, `address`, `guest_ID`) VALUES ($payment_money,'$meal_type','$checkin_date','$checkout_date','$address',$guestid);";
         
         if ($conn->query($insertQuery) === TRUE) {
             $insertQuery2="INSERT INTO `book_room`(`Room_ID`, `Booking_ID`) VALUES ($room_id,(SELECT max(Booking_ID) FROM booking));";

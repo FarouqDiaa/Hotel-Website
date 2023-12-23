@@ -33,22 +33,18 @@
 <body style="background-color: rgb(5,5,5);">
     <?php
 
-
-        // INSERT INTO `feedback`(`feedback_ID`, `guest_ID`, `feedbackDate`, `rating`, `comments`, `manager_ID`) VALUES ('[value-1]','[value-2]','[value-3]','[value-4]','[value-5]','[value-6]')
-
-
-        if(isset($_POST['feedbacksubmit']) ){  // make input called submit to insert feedback when user click on it  
+        if(isset($_POST['complainsubmit']) ){  // make input called complain submit to insert complain when user click on it  
              $guest_ID = $_SESSION['id'];
-             $rating = $_POST["feedbackrating"];
-             $comments = $_POST["feedbackcomment"];
+             $description = $_POST["description"];
+             $date = date("Y-m-d");
              
 
-    $sql = "INSERT INTO `feedback`(`guest_ID`, `feedbackDate`, `rating`, `comments`, `manager_ID`) VALUES ( $guest_ID, '$feedbackDate', $rating, '$comments', 1)";
+    $sql = " INSERT INTO `complain`(`description`, `date`,`guest_ID`) VALUES ('$description','$date',$guest_ID);";
 
             if($conn->query($sql) == true){
                 echo "
                 <div class='alert alert-success' role='alert'>
-                    Thank you for your feedback!
+                    your complain has been submited we will try to solve it as soon as possible
                 </div>
                 ";
             } else {
@@ -57,7 +53,7 @@
         }
     ?>
 
-
+    <!-- update for complain page -->
     <div class="container1 text-center">
         <!-- Feedback box -->
         <div class="feedback-box">
