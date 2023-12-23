@@ -1,4 +1,27 @@
-<?php include '../tools/connection.php'; ?>
+<?php
+include '../tools/connection.php';
+
+if(isset($_POST["course_submit"]) && $_SESSION['id']){
+    $serviceId = $_POST["service_ID"];
+    $guestId = $_SESSION['id'];
+    $insertQuery = "INSERT INTO `request_service` (`guest_ID`, `service_ID`) VALUES ('$guestId', '$serviceId')";
+
+    if($conn->query($insertQuery) == true){
+        echo "
+        <div class='alert alert-success' role='alert'>
+            Your service request has been submitted successfully!
+        </div>
+        ";
+    }
+    else{
+        echo "ERROR: $insertQuery <br> $conn->error";
+    }
+}
+
+$sql = "SELECT * FROM service";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -27,63 +50,23 @@
 </head>
 
 <body style="background-color: rgb(5,5,5);">
-    <?php
-        if(isset($_POST['serviceId'])&& isset($_SESSION['id'])){
-            $guestId = $_SESSION['id'];
-            $serviceId = $_POST['serviceId'];
-
-            // Fetch the price of the selected service
-            $priceQuery = "SELECT price FROM `service` WHERE service_ID = $serviceId";
-            $result = $conn->query($priceQuery);
-
-            if ($result->num_rows > 0) {
-                $row = $result->fetch_assoc();
-                $price = $row['price'];
-
-                $insertQuery = "INSERT INTO `request_service` (`guest_ID`, `service_ID`) VALUES ('$guestId', '$serviceId')";
-                if($conn->query($insertQuery) == true){
-                    echo "
-                    <div class='alert alert-success' role='alert'>
-                        Room service requested successfully!
-                    </div>
-                    ";
-                } else {
-                    echo "ERROR: $insertQuery <br> $conn->error";
-                }
-            }
-        }
-    ?>
-
     <div class="container1 text-center">
         <div class="service-box">
             <img src="../images/ninja.png" alt="Service Image" class="service-img" height="100px">
             <h2>Request Room Service</h2>
 
             <form action="" method="post">
-                <div class="form-group service-options">
-                    <label for="serviceId" class="p-2">Select Service:</label>
-                    <select class="form-control" name="serviceId" required>
-                        <?php
-                            $servicesQuery = "SELECT * FROM `service`";
-                            $result = $conn->query($servicesQuery);
-
-                            if ($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
-                                    $serviceId = $row['service_ID'];
-                                    $serviceName = $row['service_name'];
-                                    $price = $row['price'];
-
-                                    echo "<option value='$serviceId' >$serviceName - $price EGP</option>";
-                                }
-                            } else {
-                                echo "<option value=''>No services available</option>";
-                            }
-                        ?>
+                <div class="form-group">
+                    <label for="service" class="p-2">Service:</label>
+                    <select class="form-control" id="service" name="service_ID" required>
+                        <option value="" disabled class="p-2">Select service</option>
+                        <option value="1" <?php echo ($row["service_ID"] == 1) ? "selected" : ""; ?>>Room Service-250EGP</option>
+                        <option value="2" <?php echo ($row["service_ID"] == 2) ? "selected" : ""; ?>>Laundry-100EGP</option>
+                        <option value="3" <?php echo ($row["service_ID"] == 3) ? "selected" : ""; ?>>Car Rental-3000EGP</option>
+                        <option value="4" <?php echo ($row["service_ID"] == 4) ? "selected" : ""; ?>>Airport Transfer-550EGP</option>
                     </select>
                 </div>
-                <div class="con">
-                    <input type="submit" class="btn btn-danger p-2 m-4" value="Request Service">
-                </div>
+                <button type="submit" class="btn btn-primary p-2 m-3" name="course_submit">Request Service</button>
             </form>
         </div>
     </div>
