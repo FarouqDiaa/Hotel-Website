@@ -21,8 +21,25 @@
 
     <?php
         if(!isset($_SESSION["loggedin"])){
-            header("Location: login.php");
+            header("Location: login.php");   
         }
+
+        if(isset($_POST['delete_button']) ){  // TODO : make input called delete button to delete_button  when user click on it  
+           
+            $guest_ID = $_SESSION['id'];  // TODO :check for any thing should be done using html and css
+            $sql = "DELETE FROM `guest` WHERE guest_ID=$guest_ID"; // deleting user profile
+
+            if($conn->query($sql) == true){
+                echo "
+                <div class='alert alert-success' role='alert'>
+                    your profile deleted successfuly!
+                </div>
+                ";
+            } else {
+                echo "ERROR: $sql <br> $conn->error";
+            }
+        }
+    
     ?>
 
     <section style="background-color: white;">
