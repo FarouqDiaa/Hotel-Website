@@ -16,28 +16,26 @@
     <?php include '../includes/navbar.php' ?>
     <br><br>
     <?php
-        $course_id = $_GET["cid"];
+        $booking_id = $_GET["booking_id"]; // get booking id i want to change its details
 
-        if(isset($_POST["course_submit"])){
-            $course_name = $_POST["course_name"];
-            $course_price = $_POST["course_price"];
-            $course_code = $_POST["course_code"];
-            $course_instructor = $_POST["course_instructor"];
-            $course_desc = $_POST["course_desc"];
-            $course_image = $_FILES["course_image"]["name"];
-            $c_img_tmp = $_FILES["course_image"]["tmp_name"];
-            $folder = "../coursesimg/".$course_image;
-
-            $sql = "UPDATE courses SET course_name = '$course_name', course_price = '$course_price', course_code = '$course_code', course_desc = '$course_desc', course_image = '$course_image' WHERE course_id = $course_id";
+        if(isset($_POST["book_submit"])&& isset($_GET["booking_id"])){ // make button to update booking 
+            $room_id = $_GET['cid']; // if the user want to change the room TODO : make text box to take room id to change to from user
+            $guestid = $_SESSION['id'];
+            $payment_money=$_POST['payment']; //TODO :make textbox called payment take the amount of money from user
+            $meal_type=$_POST['meal_type'];//TODO :make textbox called meal_type take the meal_type from user
+            $checkout_date=$_POST['checkout_date'];//TODO :make textbox called checkout_date take the checkout_date from user
+            $address=$_POST['address'];//TODO:make textbox called address take the address from user
+                
+            $sql = "UPDATE `booking` SET `payment`=$payment_money,`meal_type`='$meal_type',`checkout_date`='$checkout_date',`address`='$address',`guest_ID`='$guestid' WHERE Booking_ID=$booking_id";
 
 
             if($conn->query($sql) == true){
                 echo "
                 <div class='alert alert-success' role='alert'>
-                    Your course has been updated successfully!
+                    Your booking has been updated successfully!
                 </div>
                 ";
-                move_uploaded_file($c_img_tmp, $folder);
+                //move_uploaded_file($c_img_tmp, $folder); donot know if you will need it @farouq
             }
             else{
                 echo "ERROR: $sql <br> $conn->error";
@@ -45,11 +43,11 @@
         }
 
 
-        $sql = "SELECT * FROM courses WHERE course_id = $course_id";
+        // $sql = "SELECT * FROM courses WHERE course_id = $course_id";
 
-        $result = $conn->query($sql);
+        // $result = $conn->query($sql);
 
-        $row = $result->fetch_assoc();
+        // $row = $result->fetch_assoc(); // donot know if you will need it @farouq
     ?>
     <div class="container mt-5">
     <h1>Edit Course</h1>
