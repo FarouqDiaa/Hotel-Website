@@ -34,11 +34,17 @@
     <?php
 
 
-        if(isset($_POST['feedbackrating']) && isset($_POST['feedbackcomment'])){    
-            $rating = $_POST['feedbackrating'];
-            $comment = $_POST['feedbackcomment'];
+        // INSERT INTO `feedback`(`feedback_ID`, `guest_ID`, `feedbackDate`, `rating`, `comments`, `manager_ID`) VALUES ('[value-1]','[value-2]','[value-3]','[value-4]','[value-5]','[value-6]')
 
-            $sql = "INSERT INTO `feedback` (`user_id`, `rating`, `feedback`) VALUES ('$user_id', '$rating' , '$comment')";
+
+        if(isset($_POST['feedbacksubmit']) ){  // make input called submit to insert feedback when user click on it  
+            $feedback_ID = $_POST["feedback_ID"];
+             $guest_ID = $_SESSION['id'];
+             $rating = $_POST["feedbackrating"];
+             $comments = $_POST["feedbackcomment"];
+             
+
+    $sql = "INSERT INTO `feedback`(`feedback_ID`, `guest_ID`, `feedbackDate`, `rating`, `comments`, `manager_ID`) VALUES ('$feedback_ID', '$guest_ID', '$feedbackDate', '$rating', '$comments', `1`)";
 
             if($conn->query($sql) == true){
                 echo "
@@ -74,7 +80,7 @@
                     <textarea class="form-control txtarea" name="feedbackcomment" placeholder="Leave your comment here" required></textarea>
                 </div>
                 <div class="con">
-                    <input type="submit" class="btn btn-danger p-2 m-4" value="Submit Feedback">
+                    <input type="submit" class="btn btn-danger p-2 m-4" name="feedbacksubmit" value="Submit Feedback">
                 </div>
             </form>
         </div>

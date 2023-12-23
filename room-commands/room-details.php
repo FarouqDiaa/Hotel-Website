@@ -3,7 +3,7 @@
     include '../includes/navbar.php';
 
     $id = $_GET['cid'];
-    $sql = "SELECT * FROM courses WHERE course_id=$id";
+    $sql = "SELECT * FROM room WHERE Room_ID=$id";
 
     $result = $conn->query($sql);
 

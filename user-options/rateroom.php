@@ -32,21 +32,21 @@
 <body style="background-color: rgb(5,5,5);">
     <?php
 
-        $user_id = 1; // Replace with the actual user ID 
-        $bookingQuery = "SELECT room_number FROM bookings WHERE user_id = $user_id"; //update query
+        $user_id = $_SESSION['id']; // Replace with the actual user ID 
+        $bookingQuery = "SELECT Room_ID from booking b,book_room br WHERE(b.Booking_ID=br.Booking_ID and guest_ID=$user_id);"; //update query
         $result = $conn->query($bookingQuery);
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            $roomNumber = $row['room_number'];  // get here room number of the user that open now the page
+            $roomNumber = $row['Room_ID'];  // get here room number of the user that open now the page
         } else {
-            $roomNumber = ''; // Set a default value or handle the case when no booking is found
+            echo "<br><br><div class='alert alert-success' role='alert'>you didnot reserve a room yet </div>"; // Set a default value or handle the case when no booking is found
         }
 
         if(isset($_POST['roomrating'])){    
             $rating = $_POST['roomrating'];
 
-            $sql = "INSERT INTO `room_rating` (`user_id`, `room_number`, `rating`, `feedback`) VALUES ('$user_id', '$roomNumber', '$rating' , '$comment')"; //update query
+            $sql = "INSERT INTO rate_room VALUES ((SELECT Room_ID from booking b,book_room br WHERE(b.Booking_ID=br.Booking_ID and guest_ID=$user_id)),$user_id,$rating)"; //update query
 
 
 
