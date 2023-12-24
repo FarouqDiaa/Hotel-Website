@@ -41,6 +41,7 @@
              $guest_ID = $_SESSION['id'];
              $rating = $_POST["feedbackrating"];
              $comments = $_POST["feedbackcomment"];
+             $feedbackDate=date("Y-m-d");
              
 
     $sql = "INSERT INTO `feedback`(`guest_ID`, `feedbackDate`, `rating`, `comments`, `manager_ID`) VALUES ( $guest_ID, '$feedbackDate', $rating, '$comments', 1)";
