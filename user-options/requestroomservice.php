@@ -26,10 +26,11 @@
     </style>
 </head>
 
+
 <body style="background-color: rgb(5,5,5);">
     <?php
-        if(isset($_POST['serviceId'])&& isset($_SESSION['id'])){
-            $guestId = $_SESSION['id'];
+        if(isset($_POST['serviceId'])&& $_POST['requestsubmit']){
+            $guestId = 5;
             $serviceId = $_POST['serviceId'];
 
             // Fetch the price of the selected service
@@ -82,7 +83,7 @@
                     </select>
                 </div>
                 <div class="con">
-                    <input type="submit" class="btn btn-danger p-2 m-4" value="Request Service">
+                    <input type="submit" class="btn btn-danger p-2 m-4"  name="requestsubmit" value="Request Service">
                 </div>
             </form>
         </div>
