@@ -70,7 +70,7 @@
       
             $pass = password_hash($pass, PASSWORD_DEFAULT);
             
-            $sql = "INSERT INTO `guests` (`username`, `email` ,`password`, `usertype`) VALUES ('$username', '$email' , '$pass' , '$usertype')";
+            $sql = "INSERT INTO `guest` (`username`, `email` ,`password`, `usertype`) VALUES ('$username', '$email' , '$pass' , '$usertype')";
     
             if($conn->query($sql) == true){
                 echo "
