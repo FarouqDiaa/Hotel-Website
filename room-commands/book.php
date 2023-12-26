@@ -2,12 +2,12 @@
 include '../includes/connection.php';
 
 if (!isset($_SESSION["id"])) {
-    header("Location: ../useroptions/login.php");
+    header("Location: ../user-options/login.php");
     exit();
 }
 
-if (isset($_GET['cid'])) {
-    $room_id = $_GET['cid'];
+if (isset($_GET['rid'])) {
+    $room_id = $_GET['rid'];
     $guestid = $_SESSION['id'];
     $payment_money=$_POST['payment']; //TODO :make textbox called payment take the amount of money from user
     $meal_type=$_POST['meal_type'];//TODO :make textbox called meal_type take the meal_type from user
@@ -28,24 +28,19 @@ if (isset($_GET['cid'])) {
             $insertQuery2="INSERT INTO `book_room`(`Room_ID`, `Booking_ID`) VALUES ($room_id,(SELECT max(Booking_ID) FROM booking));";
             if ($conn->query($insertQuery2) === TRUE)
             {
-                echo "
-                <div class='alert alert-success' role='alert'>
-                    room booked successfully
-                </div>
-                ";
-            header("Location: coursedetails.php?status=success&cid=$course_id"); // donot  understand what that doing
+             header("Location: room-details.php?status=success&rid=$room_id"); // donot  understand what that doing
             exit();
             }
 
         } else {
-            header("Location: coursedetails.php?status=error&message=" . urlencode($conn->error));// donot  understand location : etc
+            header("Location: room-details.php?status=error&message=" . urlencode($conn->error));// donot  understand location : etc
             exit();
         }
     } else {
-        header("Location: coursedetails.php?status=already_enrolled&cid=$course_id");// donot  understand what that doing
+        header("Location: room-details.php?status=already_booked&rid=$room_id");// donot  understand what that doing
         exit();
     }} else {
-        header("Location: coursedetails.php?status=invalid_cid");// donot  understand what that doing
+        header("Location: room-details.php?status=invalid_rid");// donot  understand what that doing
 exit();
 }
 
