@@ -1,4 +1,6 @@
-<?php include '../tools/connection.php'; ?>
+<?php include '../tools/connection.php';
+include '../tools/navbarhome.php';
+ ?>
 
 <!DOCTYPE html>
 <html lang="en">

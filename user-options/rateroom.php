@@ -1,4 +1,6 @@
-<?php include '../tools/connection.php'; ?>
+<?php include '../tools/connection.php'; 
+include '../tools/navbarhome.php';
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,6 +34,7 @@
 <body style="background-color: rgb(5,5,5);">
     <?php
 
+        if(isset($_SESSION['id'])){
         $user_id = $_SESSION['id']; // Replace with the actual user ID 
         $bookingQuery = "SELECT Room_ID from booking b,book_room br WHERE(b.Booking_ID=br.Booking_ID and guest_ID=$user_id);"; //update query
         $result = $conn->query($bookingQuery);
@@ -42,7 +45,6 @@
         } else {
             echo "<br><br><div class='alert alert-success' role='alert'>you didnot reserve a room yet </div>"; // Set a default value or handle the case when no booking is found
         }
-
         if(isset($_POST['roomrating'])){    
             $rating = $_POST['roomrating'];
 
@@ -60,6 +62,7 @@
                 echo "ERROR: $sql <br> $conn->error";
             }
         }
+        }
     ?>
 
     <div class="container1 text-center">
@@ -69,7 +72,7 @@
             <h2>Room Feedback</h2>
             <form action="" method="post">
                 <div class="form-group rating">
-                    <label for="rating" class="p-2">Rating for room number <?php echo $roomNumber; ?>:</label>
+                    <label for="rating" class="p-2">Rating for room number <?php if(isset($roomNumber))echo $roomNumber; ?>:</label>
                     <select class="form-control" name="roomrating" required>
                         <option value="5">5 stars</option>
                         <option value="4">4 stars</option>

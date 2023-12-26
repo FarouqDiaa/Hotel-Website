@@ -1,7 +1,7 @@
 <?php
 include '../tools/connection.php';
-
-if(isset($_POST["course_submit"]) && $_SESSION['id']){
+include '../tools/navbarhome.php';
+if(isset($_POST["course_submit"]) && isset($_SESSION['id'])){
     $serviceId = $_POST["service_ID"];
     $guestId = $_SESSION['id'];
     $insertQuery = "INSERT INTO `request_service` (`guest_ID`, `service_ID`) VALUES ('$guestId', '$serviceId')";
