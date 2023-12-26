@@ -50,7 +50,7 @@
                 <p><strong>Description:</strong></p>
                 <p><?php echo $row['course_desc']; ?></p>
                 <p><strong>Price:</strong> <?php echo $row['course_price']; ?></p>
-                <p><strong>Course Code:</strong> <?php echo $row['course_code']; ?></p>
+                <p><strong>Course Code test:</strong> <?php echo $row['course_code']; ?></p>
                 <a href="enroll.php?cid=<?php echo $row['course_id']; ?>" class="btn btn-primary">Enroll Now</a>
             </div>
         </div>
