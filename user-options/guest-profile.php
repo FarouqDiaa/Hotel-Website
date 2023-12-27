@@ -37,14 +37,22 @@
     if (isset($_POST['delete_button'])) {  // TODO : make input called delete button to delete_button  when user click on it  
     
         $guest_ID = $_SESSION['id'];  // TODO :check for any thing should be done using html and css
+        $sql = "DELETE FROM `account`
+        WHERE `username` IN (SELECT `username` FROM `has_account` WHERE guest_ID = $id);"; // deleting user profile
+        $conn->query($sql);
         $sql = "DELETE FROM `guest` WHERE guest_ID=$guest_ID"; // deleting user profile
-    
+
         if ($conn->query($sql) == true) {
             echo "
                 <div class='alert alert-success' role='alert'>
-                    your profile deleted successfuly!
+                    Your profile has been deleted successfully!
                 </div>
-                ";
+                <script>
+                    setTimeout(function(){
+                        window.location.href = '../user-options/logout.php';
+                    }, 2000);
+                </script>
+            ";
         } else {
             echo "ERROR: $sql <br> $conn->error";
         }
@@ -185,40 +193,54 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="card mb-4 mb-md-0">
-                                <strong><br>&nbsp&nbsp Rented Rooms: <strong>
-                                        <div class="card-body">
+                                <strong><br>&nbsp&nbsp Bookings: <strong>
+                                        <div class="card-body table-responsive">
                                             <?php
-                                                $guestid = $_SESSION['id'];
-                                                $sql = "SELECT `Booking_ID`, `payment`, `meal_type`, `checkin_date`, `checkout_date`, `address` FROM `booking` WHERE guest_ID=$guestid;";
+                                            $sql = "SELECT `Booking_ID`, `payment`, `meal_type`, `checkin_date`, `checkout_date` FROM `booking` WHERE guest_ID=$id;";
+                                            $result = $conn->query($sql);
+                                            $n = 1;
 
-                                                $result = $conn->query($sql);
+                                            echo "<table class='table table-hover'>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Booking_ID</th>
+                                                            <th>Price</th>
+                                                            <th>Meal_type</th>
+                                                            <th>Checkin_date</th>
+                                                            <th>Checkout_date</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>";
 
-                                                echo "<table class='table table-hover'>
-                                                <thead>
-                                                <tr>
-                                                <th>#</th>
-                                                <th>Booking_ID</th>
-                                                <th>Price</th>
-                                                <th>Meal_type</th>
-                                                <th>Checkin_date</th>
-                                                <th>Checkout_date</th>
-                                                <th>Address</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>";
+                                            while ($row = $result->fetch_assoc()) {
+                                                echo "<tr>
+                                                <td>" . $n . "</td>
+                                                <td>" . $row["Booking_ID"] . "</td>
+                                                            <td>" . $row["payment"] . "</td>
+                                                            <td>" . $row["meal_type"] . "</td>
+                                                            <td>" . $row["checkin_date"] . "</td>
+                                                            <td>" . $row["checkout_date"] . "</td>
+                                                          </tr>";
+                                                $n++;
+                                            }
 
-                                                while ($row = $result->fetch_assoc()) {
-                                                    echo "<tr><td>" . $row["Booking_ID"] . "</td><td>" . $row["payment"] . "</td></td>" . $row["meal_type"] . "</td></td>" . $row["checkin_date"] . "</td></td>" . $row["checkout_date"] . "</td></td>" . $row["address"] . "</td></tr>";
-
-                                                }
-                                                echo "</tbody></table>";
+                                            echo "</tbody></table>";
 
                                             ?>
                                         </div>
+
                             </div>
                         </div>
+                        <br>
+                        <form method="post">
+                            <button type="submit" name="delete_button" class="btn btn-danger">
+                                <i class="fas fa-trash-alt"></i> Delete Account
+                            </button>
+                        </form>
+
                     </div>
                 </div>
             </div>
