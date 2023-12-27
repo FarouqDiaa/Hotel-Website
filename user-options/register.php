@@ -94,9 +94,6 @@
             }else  if ($check->num_rows > 0) {
                 echo "<div class='alert alert-danger' role='alert'>Username Exists</div>";
             } else{
-      
-            $pass = password_hash($pass, PASSWORD_DEFAULT);
-            
             $sql = "INSERT INTO `guest`(`passport_ID`, `nationality`, `phone`, `email`, `address`, `FName`, `LName`, `gender`, `age`, `card_number`) VALUES ('$passport_ID','$nationality','$phone','$email','$address','$FName','$LName','$gender','$age','$card_number')";
     
             if($conn->query($sql) == true){

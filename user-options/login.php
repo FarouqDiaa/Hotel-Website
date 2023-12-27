@@ -56,21 +56,39 @@
             $pass = $_POST['pass'];
             
             $sql = "SELECT * FROM `account` WHERE `username` = '$username'";
-
+            
             $result = $conn->query($sql);
 
             if($result->num_rows >= 1){
                 $row = $result->fetch_assoc();
-                if(password_verify($pass, $row['password'])){
+                if($pass=== $row['password']){
                     $_SESSION['loggedin'] = true;
                     $_SESSION['username'] = $username;
-                    $_SESSION['id'] = $row['ID'] ;
-                    $_SESSION['usertype'] = $row['type'];
-                    if ($_SESSION['ID'] == 0){
-                    header("Location: guest-profile.php?id=". $row["ID"] ."");
+                    if($row['type'] == 0){
+                        $sql2 = "SELECT * FROM `has_account` WHERE `username` = '$username'";
+                        $result2 = $conn->query($sql2);
+                        $row2 = $result2->fetch_assoc();
+                        $_SESSION['id'] = $row2['guest_ID'] ;
+                        $_SESSION['usertype'] = 0;
+
+                    }elseif($row['type'] == 3){
+                        $sql3 = "SELECT * FROM `manager` WHERE `username` = '$username'";
+                        $result3 = $conn->query($sql3);
+                        $row3 = $result3->fetch_assoc();
+                        $_SESSION['id'] = $row3['manager_ID'] ;
+                        $_SESSION['usertype'] = 3;
+                    }else{
+                        $sql4 = "SELECT * FROM `staff` WHERE `username` = '$username'";
+                        $result4 = $conn->query($sql4);
+                        $row4 = $result4->fetch_assoc();
+                        $_SESSION['id'] = $row4['staff_ID'] ;
+                        $_SESSION['usertype'] = $row['type'];
+                    }
+                    if ($_SESSION['usertype'] == 0){
+                    header("Location: guest-profile.php?id=". $_SESSION['id'] ."");
                 }
                 else{
-                    header("Location: ../index.php?id=". $row["ID"] ."");
+                    header("Location: ../index.php?id=". $_SESSION['id'] ."");
                 };
                 }
                 else{

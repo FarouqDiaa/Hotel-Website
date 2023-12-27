@@ -1,7 +1,7 @@
 <?php
-include '../includes/connection.php';
+include '../tools/connection.php';
 
-if (!isset($_SESSION["id"])) {
+if (!isset($_SESSION['id'])) {
     header("Location: ../user-options/login.php");
     exit();
 }
@@ -9,7 +9,7 @@ if (!isset($_SESSION["id"])) {
 if (isset($_GET['rid'])) {
     $room_id = $_GET['rid'];
     $guestid = $_SESSION['id'];
-    $payment_money=$_POST['payment']; //TODO :make textbox called payment take the amount of money from user
+    $payment_money=100; //TODO :make textbox called payment take the amount of money from user
     $meal_type=$_POST['meal_type'];//TODO :make textbox called meal_type take the meal_type from user
     $checkin_date = date("Y-m-d"); // checkin_date is today
     $checkout_date=$_POST['checkout_date'];//TODO :make textbox called checkout_date take the checkout_date from user
