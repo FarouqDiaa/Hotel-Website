@@ -20,6 +20,15 @@
                 Your Booking has been deleted successfully!
             </div>
             ";
+            $upd_availability="UPDATE `room` SET`avalability`=1 WHERE Room_ID=$room_id";
+            if ($conn->query($upd_availability) === TRUE)    
+            { header("Location: ../dashboard.php"); 
+            exit();
+            }
+            else 
+            {
+                echo "ERROR: $upd_availability <br> $conn->error";
+            }
             header("Location: ../dashboard.php");
             }
             else {
