@@ -6,7 +6,7 @@ include '../tools/navbarhome.php';?>
 <head> 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Set Bonus for Staff</title>
+    <title>Set Salary for Staff</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <style>
         .manage-box {
@@ -47,7 +47,7 @@ include '../tools/navbarhome.php';?>
         
         <div class="manage-box">
             <img src="../images/ninja.png" alt="ninja Photo" class="manage-img" height="100px">
-            <h2>Set Bonus for Staff</h2>
+            <h2>Set Salary for Staff</h2>
 
             
             <table class="table table-bordered">
@@ -85,13 +85,10 @@ include '../tools/navbarhome.php';?>
                                     <div class='bonus-form'>
                                         <form action='' method='post'>
                                             <input type='hidden' name='staffID' value='$staffID'>
-                                            <input type='number' name='newBonus' placeholder='New Bonus' required>
-                                            <input type='submit' class='btn btn-primary' name='setBonus' value='Set Bonus'>
+                                            <input type='number' name='newSalary' placeholder='New Salary' required>
+                                            <input type='submit' class='btn btn-primary' name='setSalary' value='Set Salary'>
                                         </form>
-                                        <form action='' method='post'>
-                                            <input type='hidden' name='staffID' value='$staffID'>
-                                            <input type='submit' class='btn btn-warning' name='resetBonus' value='Reset Bonus'>
-                                        </form>
+                                       
                                     </div>
                                 </td>
                             </tr>
@@ -103,39 +100,25 @@ include '../tools/navbarhome.php';?>
 
             <?php
                 
-                if(isset($_POST['setBonus'])){
+                if(isset($_POST['setSalary'])){
                     $staffID = $_POST['staffID'];
-                    $newBonus = max(0, $_POST['newBonus']); // Ensure bonus is not negative
+                    $newBonus = max(0, $_POST['newSalary']); 
 
-                    $updateBonusQuery = "UPDATE staff SET bonus = '$newBonus' WHERE staff_ID = '$staffID'";
+                    $updateSalaryQuery = "UPDATE staff SET salary = '$newBonus' WHERE staff_ID = '$staffID'";
                     
-                    if($conn->query($updateBonusQuery)){
+                    if($conn->query($updateSalaryQuery)){
                         echo "
                         <div class='alert alert-success' role='alert'>
                             Bonus set successfully!
                         </div>
                         ";
                     } else {
-                        echo "ERROR: $updateBonusQuery <br> $conn->error";
+                        echo "ERROR: $updateSalaryQuery <br> $conn->error";
                     }
                 }
 
                 
-                if(isset($_POST['resetBonus'])){
-                    $staffID = $_POST['staffID'];
-
-                    $resetBonusQuery = "UPDATE staff SET bonus = 0 WHERE staff_ID = '$staffID'";
-                    
-                    if($conn->query($resetBonusQuery)){
-                        echo "
-                        <div class='alert alert-warning' role='alert'>
-                            Bonus reset successfully!
-                        </div>
-                        ";
-                    } else {
-                        echo "ERROR: $resetBonusQuery <br> $conn->error";
-                    }
-                }
+                
             ?>
         </div>
     </div>
