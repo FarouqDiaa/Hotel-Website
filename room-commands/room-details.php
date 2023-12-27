@@ -45,12 +45,12 @@
                 <img src="../images/<?php echo $row['room_pic']; ?>" alt="Room Picture" style="max-width: 100%;">
             </div>
             <div class="col-md-6">
-                <h1><?php echo "Room Number: ".$row['Room_ID'].""; ?></h1>
-                <p><strong>Description:</strong></p>
-                <p><?php echo $row['room_desription']; ?></p>
-                <p><strong>Price:</strong> <?php echo $row['PricePerNight']; ?></p>
-                <p><strong>Number Of Beds:</strong> <?php echo $row['num of beds']; ?></p>
-                <p><strong>Capacity:</strong> <?php echo $row['capacity']; ?></p>
+                <h1  style='color: white;'><?php echo "Room Number: ".$row['Room_ID'].""; ?></h1>
+                <p  style='color: white;'><strong>Description:</strong></p>
+                <p  style='color: white;'><?php echo $row['room_desription']; ?></p>
+                <p style='color: white;'><strong>Price:</strong> <?php echo $row['PricePerNight']; ?></p>
+                <p style='color: white;'><strong>Number Of Beds:</strong> <?php echo $row['num of beds']; ?></p>
+                <p style='color: white;'><strong>Capacity:</strong> <?php echo $row['capacity']; ?></p>
                 <a href="book.php?rid=<?php echo $row['Room_ID']; ?>" class="btn btn-danger" data-toggle="modal" data-target="#bookingModal">Book Now</a>
             </div>
         </div>
@@ -65,17 +65,19 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" class="form-control" placeholder="Payment" name="payment">
+                    <input type="text" class="form-control" placeholder="Meal Type" name="type">
                     <select class="form-control mt-2">
-                        <option value="option1">Option 1</option>
-                        <option value="option2">Option 2</option>
-                        <option value="option3">Option 3</option>
+                        <option selected> Select Meal Type</option>
+                        <option value="Breakfast">Breakfast</option>
+                        <option value="Launch">Launch</option>
+                        <option value="Dinner">Dinner</option>
+                        <option value="Breakfast-Launch">Breakfast and Launch</option>
                     </select>
-                    <input type="date" class="form-control mt-2" placeholder="Check-out Date">
+                    <input type="date" class="form-control mt-2" placeholder="Check-out Date" name="cdate">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Book Now</button>
+                    <button type="button" class="btn btn-danger">Book Now</button>
                 </div>
             </div>
         </div>
