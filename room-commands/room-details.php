@@ -1,6 +1,6 @@
 <?php
-    include '../includes/connection.php';  
-    include '../includes/navbar.php';
+    include '../tools/connection.php';  
+    include '../tools/navbar.php';
 
     $id = $_GET['rid'];
     $sql = "SELECT * FROM room WHERE Room_ID=$id";
@@ -37,7 +37,7 @@
     <link href="https://fonts.googleapis.com/css?family=Lato:700%7CMontserrat:400,600" rel="stylesheet">
 	<link type="text/css" rel="stylesheet" href="../css/style.css"/>
 </head>
-<body>
+<body style="background-color:#B00200">
     <br>
     <div class="container mt-5">
         <div class="row">
@@ -45,9 +45,9 @@
                 <img src="../images/<?php echo $row['room_pic']; ?>" alt="Room Picture" style="max-width: 100%;">
             </div>
             <div class="col-md-6">
-                <h1><?php echo "Room Number: " $row['Room_ID']; ?></h1>
+                <h1><?php echo "Room Number: ".$row['Room_ID'].""; ?></h1>
                 <p><strong>Description:</strong></p>
-                <p><?php echo $row['description']; ?></p>
+                <p><?php echo $row['room_desription']; ?></p>
                 <p><strong>Price:</strong> <?php echo $row['PricePerNight']; ?></p>
                 <p><strong>Number Of Beds:</strong> <?php echo $row['num of beds']; ?></p>
                 <p><strong>Capacity:</strong> <?php echo $row['capacity']; ?></p>

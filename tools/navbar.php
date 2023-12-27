@@ -134,7 +134,7 @@
 </style>
 <?php
 if (session_id() == ''){session_start();}
-if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["usertype"]) && $_SESSION["usertype"] ==1){
+if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["usertype"]) && $_SESSION["usertype"] ==0){
     echo"
 
     <nav class='navbar navbar-expand-lg navbar-dark'>
@@ -161,24 +161,23 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["us
         <li class='parent' id='services'>
           <a class='link' href='#'><i class='fas fa-minus'></i> Services <i class='fas fa-plus'></i></a>
           <ul class='subnavigation'>
-            <li><a class='link' href='#'>Complaints</a></li>
-            <li><a class='link' href='#'>Requested Service</a></li>
-            <li><a class='link' href='#'>Offers</a></li>
+            <li><a class='link' href='../user-options/makecomplain.php'>Complaints</a></li>
+            <li><a class='link' href='../user-options/requestroomservice.php'>Requested Service</a></li>
           </ul>
         </li>
       <li class='parent'>
       <a class='link' href='../user-options/guest-profile.php?guest_ID=". $_SESSION["id"]."'>
-              <img src='../images/user.png' height='40vh' alt='user'>
+              <img src='../images/user.png' height='30vh' alt='user'>
       </a></li>
                     <li class='parent'>
                         <a class='link' href='../user-options/logout.php'>Log Out</a>
                     </li>
-    </ul>
+        </ul>
                 
         </div>
     </div>
 </nav>";
-}elseif (isset($_SESSION["usertype"]) && $_SESSION["usertype"] ==0)
+}elseif (isset($_SESSION["usertype"]) && $_SESSION["usertype"] ==1)
 {
     echo"
     <nav class='navbar navbar-expand-lg navbar-dark'>
@@ -194,37 +193,83 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["us
         <div class='collapse navbar-collapse justify-content-end' id='navbarNav'>
         <ul class='navigation'>
         <li class='parent'><a class='link' href='../index.php'>Home</a></li>
-        <li class='parent' id='clients'>
-          <a class='link' href='#'><i class='fas fa-minus'></i> Rooms <i class='fas fa-plus'></i></a>
-          <ul class='subnavigation'>
-            <li><a class='link' href='../index.php#Singlerooms'>Single Rooms</a></li>
-            <li><a class='link' href='../index.php#Doublerooms'>Double Rooms</a></li>
-            <li><a class='link' href='../index.php#Sweets'>Sweets</a></li>
-          </ul>
-        </li>
-        <li class='parent' id='services'>
-          <a class='link' href='#'><i class='fas fa-minus'></i> Services <i class='fas fa-plus'></i></a>
-          <ul class='subnavigation'>
-            <li><a class='link' href='#'>Complaint</a></li>
-            <li><a class='link' href='#'>Request Service</a></li>
-            <li><a class='link' href='#'>Offers</a></li>
-          </ul>
-        </li>
-        <li class='parent'><a class='link' href='../about-us.php'>About Us</a></li>
+        <li class='parent'><a class='link' href='../handle-req.php'>Handle Requests</a></li>
       <li class='parent'>
-      <a class='link' href='../user-options/guest-profile.php?guest_ID=". $_SESSION["id"]."'>
+      <a class='link' href='../user-options/staff-profile.php?ID=". $_SESSION["id"]."'>
               <img src='../images/user.png' height='40vh' alt='user'>
       </a></li>
-        <li class='parent'>
-                        <a class='link' href='../user-options/rented-rooms.php'>Rented Rooms</a>
-                    </li>
-                    <li class='parent'>
-                        <a class='link' href='../user-options/logout.php'>Log Out</a>
-                    </li>
+      <li class='parent'>
+      <a class='link' href='../user-options/logout.php'>Log Out</a>
+      </li>
     </ul>
-                
-        </div>
     </div>
+    </div>
+</nav>";
+}elseif (isset($_SESSION["usertype"]) && $_SESSION["usertype"] ==2)
+{
+  echo"
+
+  <nav class='navbar navbar-expand-lg navbar-dark'>
+  <div class='container'>
+      <div class='navbar-brand'>
+          <img src='../images/ninja.png' height='60vh' alt='Ninja Pic'>
+      </div>
+      <div class='logoWrapper'>
+      <span class='ninja'>Ninja</span>
+      <span class='hotel'>Hotel</span>
+      </div>
+      
+      <div class='collapse navbar-collapse justify-content-end' id='navbarNav'>
+      <ul class='navigation'>
+      <li class='parent'><a class='link' href='../index.php'>Home</a></li>
+      <li class='parent'><a class='link' href='../receptionists/room-availability.php'>Rooms</a></li>
+      <li class='parent'><a class='link' href='../receptionists/bookings.php'>Bookings</a></li>
+      <li class='parent'><a class='link' href='../receptionists/complains.php'>Handle Complains</a></li>
+      <li class='parent'><a class='link' href='../receptionists/manageroomservicerequest.php'>Requests</a></li>
+      <li class='parent'>
+    <a class='link' href='../user-options/staff-profile.php?ID=". $_SESSION["id"]."'>
+            <img src='../images/user.png' height='30vh' alt='user'>
+    </a></li>
+                  <li class='parent'>
+                      <a class='link' href='../user-options/logout.php'>Log Out</a>
+                  </li>
+      </ul>
+              
+      </div>
+  </div>
+</nav>";
+}elseif (isset($_SESSION["usertype"]) && $_SESSION["usertype"] ==3)
+{
+  echo"
+
+  <nav class='navbar navbar-expand-lg navbar-dark'>
+  <div class='container'>
+      <div class='navbar-brand'>
+          <img src='../images/ninja.png' height='60vh' alt='Ninja Pic'>
+      </div>
+      <div class='logoWrapper'>
+      <span class='ninja'>Ninja</span>
+      <span class='hotel'>Hotel</span>
+      </div>
+      
+      <div class='collapse navbar-collapse justify-content-end' id='navbarNav'>
+      <ul class='navigation'>
+      <li class='parent'><a class='link' href='../index.php'>Home</a></li>
+      <li class='parent'><a class='link' href='../manager/mangescheduleevents.php'>Events</a></li>
+      <li class='parent'><a class='link' href='../manager/setbonus.php'>Bonus</a></li>
+      <li class='parent'><a class='link' href='../manager/setsalary.php'>Salary</a></li>
+      <li class='parent'><a class='link' href='../manager/track-sponsorship.php'>Sponsors</a></li>
+      <li class='parent'>
+    <a class='link' href='../user-options/staff-profile.php?ID=". $_SESSION["id"]."'>
+            <img src='../images/user.png' height='30vh' alt='user'>
+    </a></li>
+                  <li class='parent'>
+                      <a class='link' href='../user-options/logout.php'>Log Out</a>
+                  </li>
+      </ul>
+              
+      </div>
+  </div>
 </nav>";
 }else{
     echo"<nav class='navbar navbar-expand-lg navbar-dark'>
@@ -247,19 +292,9 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["us
             <li><a class='link' href='../index.php#Doublerooms'>Double Rooms</a></li>
             <li><a class='link' href='../index.php#Sweets'>Sweets</a></li>
           </ul>
-        </li>
-        <li class='parent' id='services'>
-          <a class='link' href='#'><i class='fas fa-minus'></i> Services <i class='fas fa-plus'></i></a>
-          <ul class='subnavigation'>
-            <li><a class='link' href='#'>Complaint</a></li>
-            <li><a class='link' href='#'>Request Service</a></li>
-            <li><a class='link' href='#'>Offers</a></li>
-          </ul>
-        </li>
-        
+        </li> 
         <li class='parent'><a class='link' href='../about-us.php'>About Us</a></li>
         <li class='parent'><a class='link' href='../user-options/login.php'>Log In</a></li>
-
       </ul>
         </div>
     </div>
