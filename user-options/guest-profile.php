@@ -1,4 +1,4 @@
-<?php include '../tools/connection.php'?>
+<?php include '../tools/connection.php' ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,22 +10,23 @@
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../icons/fontawesome/css/all.min.css">
     <link href="https://fonts.googleapis.com/css?family=Lato:700%7CMontserrat:400,600" rel="stylesheet">
-    <link type="text/css" rel="stylesheet" href="../css/style.css"/>
+    <link type="text/css" rel="stylesheet" href="../css/style.css" />
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="../js/bootstrap.bundle.min.js"></script>
 </head>
+
 <body>
 
-    <?php 
-     if(!isset($_SESSION["loggedin"])){
-        header("Location: login.php");   
+    <?php
+    if (!isset($_SESSION["loggedin"])) {
+        header("Location: login.php");
     }
-    
-        include '../tools/navbar.php';
+
+    include '../tools/navbar.php';
     ?>
 
     <?php
-       
+
     $id = $_GET['id'];
     $sql = "SELECT * FROM guest WHERE guest_ID=$id";
 
@@ -33,22 +34,22 @@
 
     $row = $result->fetch_assoc();
 
-        if(isset($_POST['delete_button']) ){  // TODO : make input called delete button to delete_button  when user click on it  
-           
-            $guest_ID = $_SESSION['id'];  // TODO :check for any thing should be done using html and css
-            $sql = "DELETE FROM `guest` WHERE guest_ID=$guest_ID"; // deleting user profile
-
-            if($conn->query($sql) == true){
-                echo "
+    if (isset($_POST['delete_button'])) {  // TODO : make input called delete button to delete_button  when user click on it  
+    
+        $guest_ID = $_SESSION['id'];  // TODO :check for any thing should be done using html and css
+        $sql = "DELETE FROM `guest` WHERE guest_ID=$guest_ID"; // deleting user profile
+    
+        if ($conn->query($sql) == true) {
+            echo "
                 <div class='alert alert-success' role='alert'>
                     your profile deleted successfuly!
                 </div>
                 ";
-            } else {
-                echo "ERROR: $sql <br> $conn->error";
-            }
+        } else {
+            echo "ERROR: $sql <br> $conn->error";
         }
-    
+    }
+
     ?>
     <br>
     <section style="background-color: white;">
@@ -68,9 +69,10 @@
                 <div class="col-lg-4">
                     <div class="card mb-4">
                         <div class="card-body text-center">
-                            <img src="../images/user.png" alt="User Profile Picture" class="rounded-circle img-fluid" style="width: 150px;">
+                            <img src="../images/user.png" alt="User Profile Picture" class="rounded-circle img-fluid"
+                                style="width: 150px;">
                             <br><br>
-                            <?php echo"".$_SESSION['username'].""?>
+                            <?php echo "" . $_SESSION['username'] . "" ?>
                         </div>
                     </div>
                     <div class="card mb-4 mb-lg-0">
@@ -86,7 +88,9 @@
                                     <p class="mb-0">Name</p>
                                 </div>
                                 <div class="col-sm-9">
-                                    <p class="text-muted mb-0"><?php echo"".$row["FName"]."&nbsp".$row["LName"].""?></p>
+                                    <p class="text-muted mb-0">
+                                        <?php echo "" . $row["FName"] . "&nbsp" . $row["LName"] . "" ?>
+                                    </p>
                                 </div>
                             </div>
                             <hr>
@@ -95,7 +99,9 @@
                                     <p class="mb-0">Email</p>
                                 </div>
                                 <div class="col-sm-9">
-                                    <p class="text-muted mb-0"><?php echo"".$row["email"].""?></p>
+                                    <p class="text-muted mb-0">
+                                        <?php echo "" . $row["email"] . "" ?>
+                                    </p>
                                 </div>
                             </div>
                             <hr>
@@ -104,7 +110,9 @@
                                     <p class="mb-0">Phone Number</p>
                                 </div>
                                 <div class="col-sm-9">
-                                    <p class="text-muted mb-0"><?php echo"".$row["phone"].""?></p>
+                                    <p class="text-muted mb-0">
+                                        <?php echo "" . $row["phone"] . "" ?>
+                                    </p>
                                 </div>
                             </div>
                             <hr>
@@ -113,16 +121,9 @@
                                     <p class="mb-0">Address</p>
                                 </div>
                                 <div class="col-sm-9">
-                                    <p class="text-muted mb-0"><?php echo"".$row["address"].""?></p>
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <p class="mb-0">Passport ID</p>
-                                </div>
-                                <div class="col-sm-9">
-                                    <p class="text-muted mb-0"><?php echo"".$row["passport_ID"].""?></p>
+                                    <p class="text-muted mb-0">
+                                        <?php echo "" . $row["address"] . "" ?>
+                                    </p>
                                 </div>
                             </div>
                             <hr>
@@ -131,7 +132,53 @@
                                     <p class="mb-0">Passport ID</p>
                                 </div>
                                 <div class="col-sm-9">
-                                    <p class="text-muted mb-0"><?php echo"".$row["passport_ID"].""?></p>
+                                    <p class="text-muted mb-0">
+                                        <?php echo "" . $row["passport_ID"] . "" ?>
+                                    </p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Nationality</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">
+                                        <?php echo "" . $row["nationality"] . "" ?>
+                                    </p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Gender</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">
+                                        <?php echo "" . $row["gender"] . "" ?>
+                                    </p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Age</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">
+                                        <?php echo "" . $row["age"] . "" ?>
+                                    </p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Card Number</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">
+                                        <?php echo "" . $row["card_number"] . "" ?>
+                                    </p>
                                 </div>
                             </div>
                             <hr>
@@ -141,20 +188,35 @@
                         <div class="col-md-6">
                             <div class="card mb-4 mb-md-0">
                                 <strong><br>&nbsp&nbsp Rented Rooms: <strong>
-                                <div class="card-body">
-                                    <?php
-                                        $id = $_GET['guest_ID'];
-                                        $sql = "SELECT * FROM room, guest
-                                        INNER JOIN booking ON booking.guest_ID = guest.guest_id
-                                        INNER JOIN book_room ON book_room.Booking_ID = booking.Booking_ID
-                                        INNER JOIN room ON room.Room_ID = book_room.Room_ID
-                                        WHERE guest_ID = $id";                                                                       
-                                        $result = $conn->query($sql);
-                                        while($row = $result->fetch_assoc()){
-                                            echo $row["Room_ID"] . "<br>";
-                                        }
-                                    ?>
-                                </div>
+                                        <div class="card-body">
+                                            <?php
+                                                $guestid = $_SESSION['id'];
+                                                $sql = "SELECT `Booking_ID`, `payment`, `meal_type`, `checkin_date`, `checkout_date`, `address` FROM `booking` WHERE guest_ID=$guestid;";
+
+                                                $result = $conn->query($sql);
+
+                                                echo "<table class='table table-hover'>
+                                                <thead>
+                                                <tr>
+                                                <th>#</th>
+                                                <th>Booking_ID</th>
+                                                <th>Price</th>
+                                                <th>Meal_type</th>
+                                                <th>Checkin_date</th>
+                                                <th>Checkout_date</th>
+                                                <th>Address</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>";
+
+                                                while ($row = $result->fetch_assoc()) {
+                                                    echo "<tr><td>" . $row["Booking_ID"] . "</td><td>" . $row["payment"] . "</td></td>" . $row["meal_type"] . "</td></td>" . $row["checkin_date"] . "</td></td>" . $row["checkout_date"] . "</td></td>" . $row["address"] . "</td></tr>";
+
+                                                }
+                                                echo "</tbody></table>";
+
+                                            ?>
+                                        </div>
                             </div>
                         </div>
                     </div>
@@ -166,4 +228,5 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 </body>
+
 </html>

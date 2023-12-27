@@ -9,7 +9,8 @@ if (!isset($_SESSION['id'])) {
 if (isset($_GET['rid'])) {
     $room_id = $_GET['rid'];
     $guestid = $_SESSION['id'];
-    $payment_money=100; 
+    $payment_money=100;
+    $duration=$_GET['duration']; 
     $meal_type=$_GET['mealType'];
     $checkin_date = date("Y-m-d"); // checkin_date is today
     $checkout_date=$_GET['checkOutDate'];
