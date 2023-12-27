@@ -1,12 +1,14 @@
-<?php include '../tools/connection.php'; 
-include '../tools/navbarhome.php';?>
+<?php
+include '../tools/connection.php'; 
+include '../tools/navbar.php';
+?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head> 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Set Salary for Staff</title>
+    <title>Set Bonus and Salary for Staff</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <style>
         .manage-box {
@@ -38,17 +40,14 @@ include '../tools/navbarhome.php';?>
 
 <body style="background-color: rgb(5,5,5);">
     <?php
-        
         $staffQuery = "SELECT staff_ID, FName, LName, salary, working_hours, bonus, roomservice_ID FROM staff";
         $staffResult = $conn->query($staffQuery);
     ?>
 
     <div class="container1 text-center">
-        
         <div class="manage-box">
             <img src="../images/ninja.png" alt="ninja Photo" class="manage-img" height="100px">
-            <h2>Set Salary for Staff</h2>
-
+            <h2>Set Bonus and Salary for Staff</h2>
             
             <table class="table table-bordered">
                 <thead>
@@ -86,9 +85,17 @@ include '../tools/navbarhome.php';?>
                                         <form action='' method='post'>
                                             <input type='hidden' name='staffID' value='$staffID'>
                                             <input type='number' name='newSalary' placeholder='New Salary' required>
-                                            <input type='submit' class='btn btn-primary' name='setSalary' value='Set Salary'>
+                                            <input type='submit' class='btn btn-success' name='setSalary' value='Set Salary'>
                                         </form>
-                                       
+                                        <form action='' method='post'>
+                                            <input type='hidden' name='staffID' value='$staffID'>
+                                            <input type='number' name='newBonus' placeholder='New Bonus' required>
+                                            <input type='submit' class='btn btn-primary' name='setBonus' value='Set Bonus'>
+                                        </form>
+                                        <form action='' method='post'>
+                                            <input type='hidden' name='staffID' value='$staffID'>
+                                            <input type='submit' class='btn btn-warning' name='resetBonus' value='Reset Bonus'>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
@@ -99,26 +106,55 @@ include '../tools/navbarhome.php';?>
             </table>
 
             <?php
-                
                 if(isset($_POST['setSalary'])){
                     $staffID = $_POST['staffID'];
-                    $newBonus = max(0, $_POST['newSalary']); 
+                    $newSalary = max(0, $_POST['newSalary']); // Ensure salary is not negative
 
-                    $updateSalaryQuery = "UPDATE staff SET salary = '$newBonus' WHERE staff_ID = '$staffID'";
+                    $updateSalaryQuery = "UPDATE staff SET salary = '$newSalary' WHERE staff_ID = '$staffID'";
                     
                     if($conn->query($updateSalaryQuery)){
                         echo "
                         <div class='alert alert-success' role='alert'>
-                            Bonus set successfully!
+                            Salary set successfully!
                         </div>
                         ";
                     } else {
                         echo "ERROR: $updateSalaryQuery <br> $conn->error";
                     }
                 }
+                
+                if(isset($_POST['setBonus'])){
+                    $staffID = $_POST['staffID'];
+                    $newBonus = max(0, $_POST['newBonus']); // Ensure bonus is not negative
 
+                    $updateBonusQuery = "UPDATE staff SET bonus = '$newBonus' WHERE staff_ID = '$staffID'";
+                    
+                    if($conn->query($updateBonusQuery)){
+                        echo "
+                        <div class='alert alert-primary' role='alert'>
+                            Bonus set successfully!
+                        </div>
+                        ";
+                    } else {
+                        echo "ERROR: $updateBonusQuery <br> $conn->error";
+                    }
+                }
                 
-                
+                if(isset($_POST['resetBonus'])){
+                    $staffID = $_POST['staffID'];
+
+                    $resetBonusQuery = "UPDATE staff SET bonus = 0 WHERE staff_ID = '$staffID'";
+                    
+                    if($conn->query($resetBonusQuery)){
+                        echo "
+                        <div class='alert alert-warning' role='alert'>
+                            Bonus reset successfully!
+                        </div>
+                        ";
+                    } else {
+                        echo "ERROR: $resetBonusQuery <br> $conn->error";
+                    }
+                }
             ?>
         </div>
     </div>
