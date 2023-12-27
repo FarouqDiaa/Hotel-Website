@@ -94,6 +94,20 @@
             }else  if ($check->num_rows > 0) {
                 echo "<div class='alert alert-danger' role='alert'>Username Exists</div>";
             } else{
+            $startsWith1 = "012";
+            $startsWith2 = "010";
+            $startsWith3 = "011";
+            $startsWith4 = "015";    
+
+            if (strlen($phone)===11 && (substr( $phone, 0, strlen($startsWith1)) === $startsWith1 || substr( $phone, 0, strlen($startsWith2)) === $startsWith2 || substr( $phone, 0, strlen($startsWith3)) === $startsWith3 || substr( $phone, 0, strlen($startsWith4)) === $startsWith4))
+        { 
+            
+            if($age>17)
+            {
+
+              if(strlen($passport_ID)===14)
+        {     
+
             $sql = "INSERT INTO `guest`(`passport_ID`, `nationality`, `phone`, `email`, `address`, `FName`, `LName`, `gender`, `age`, `card_number`) VALUES ('$passport_ID','$nationality','$phone','$email','$address','$FName','$LName','$gender','$age','$card_number')";
     
             if($conn->query($sql) == true){
@@ -110,7 +124,44 @@
             }
             else{
                 echo "ERROR: $sql <br> $conn->error";
-            }}
+            }
+
+        }
+        else 
+        {
+            echo "
+                <div class='alert alert-warning' role='alert'>
+                    Passport ID must equal 14 number  
+                </div>
+                "; 
+        }
+
+        }
+        else
+        {
+            echo "
+                <div class='alert alert-warning' role='alert'>
+                    people with Age less than 18 not allowable to make register in this hotel  
+                </div>
+                ";
+        }
+
+
+
+
+
+        }
+        
+        else
+        {
+            echo "
+            <div class='alert alert-warning' role='alert'>
+               Please enter valid number
+            </div>
+            ";  
+        }  
+        }
+                
         }
     ?>
   <div class="dash"></div>
