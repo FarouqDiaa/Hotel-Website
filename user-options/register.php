@@ -180,7 +180,7 @@
                 </div>
                 </div>
                 <div class="form-group">
-                    <label for="Gender">Gender:</label>
+                    <label for="Gender">Gender: </label>
                     <select class="form-control" name="gender" required>
                         <option selected>Gender</option>
                         <option value="M">Male</option>
