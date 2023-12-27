@@ -15,7 +15,6 @@ include '../tools/navbar.php'; ?>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="../js/bootstrap.bundle.min.js"></script>
 </head>
-<link rel="stylesheet" href="../css/bootstrap.min.css">
 <style>
     .form-control::placeholder {
         color: white;
