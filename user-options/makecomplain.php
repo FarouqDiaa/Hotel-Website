@@ -1,5 +1,5 @@
 <?php include '../tools/connection.php';
-include '../tools/navbarhome.php';
+include '../tools/navbar.php';
  ?>
 
 <!DOCTYPE html>
@@ -35,7 +35,8 @@ include '../tools/navbarhome.php';
 <body style="background-color: rgb(5,5,5);">
     <?php
 
-        if(isset($_POST['complainsubmit']) ){  // make input called complain submit to insert complain when user click on it  
+        if(isset($_POST['complainsubmit']) && isset($_SESSION['id']) ){  // make input called complain submit to insert complain when user click on it  
+            // $guest_ID = $_SESSION['id'];
              $guest_ID = $_SESSION['id'];
              $description = $_POST["description"];
              $date = date("Y-m-d");
@@ -60,24 +61,15 @@ include '../tools/navbarhome.php';
         <!-- Feedback box -->
         <div class="feedback-box">
             <img src="../images/ninja.png" alt="Feedback Image" class="feedback-img" height="100px">
-            <h2>Leave Your Feedback</h2>
+            <h2>Sumbit Your Complain</h2>
             <form action="" method="post">
-                <div class="form-group rating">
-                    <label for="rating" class="p-2">Rating:</label>
-                    <select class="form-control" name="feedbackrating" required>
-                        <option value="5">5 stars</option>
-                        <option value="4">4 stars</option>
-                        <option value="3">3 stars</option>
-                        <option value="2">2 stars</option>
-                        <option value="1">1 star</option>
-                    </select>
-                </div>
+                
                 <div class="form-group">
-                    <label for="comment" class="p-2">Comment:</label>
-                    <textarea class="form-control txtarea" name="feedbackcomment" placeholder="Leave your comment here" required></textarea>
+                    <label for="comment" class="p-2">Complain:</label>
+                    <textarea class="form-control txtarea" name="description" placeholder="Leave your complain here" required></textarea>
                 </div>
                 <div class="con">
-                    <input type="submit" class="btn btn-danger p-2 m-4" name="feedbacksubmit" value="Submit Feedback">
+                    <input type="submit" class="btn btn-danger p-2 m-4" name="complainsubmit" value="Submit Complain">
                 </div>
             </form>
         </div>

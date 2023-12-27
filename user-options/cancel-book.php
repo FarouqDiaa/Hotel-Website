@@ -8,7 +8,7 @@
     $booking_id = $_GET["booking_id"];
     if(isset($_POST["cancel"])&& isset($_GET["booking_id"]))// TODO: make cancel button 
 {
-    $delete_booking_sql = "DELETE FROM book_room WHERE Booking_ID=$booking_id";
+    $delete_booking_sql = "DELETE FROM book_room WHERE Booking_ID=$booking_id;";
 
         if ($conn->query($delete_courses_sql) === TRUE) {
             $checkout_date = date("Y-m-d");

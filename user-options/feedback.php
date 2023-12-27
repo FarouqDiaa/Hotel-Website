@@ -1,5 +1,5 @@
 <?php include '../tools/connection.php';
-include '../tools/navbarhome.php'; ?>
+include '../tools/navbar.php'; ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -33,12 +33,8 @@ include '../tools/navbarhome.php'; ?>
 
 <body style="background-color: rgb(5,5,5);">
     <?php
-
-
-        // INSERT INTO `feedback`(`feedback_ID`, `guest_ID`, `feedbackDate`, `rating`, `comments`, `manager_ID`) VALUES ('[value-1]','[value-2]','[value-3]','[value-4]','[value-5]','[value-6]')
-
-
-        if(isset($_POST['feedbacksubmit']) ){  // make input called submit to insert feedback when user click on it  
+       
+        if(isset($_POST['feedbacksubmit']) ){    
              $guest_ID = $_SESSION['id'];
              $rating = $_POST["feedbackrating"];
              $comments = $_POST["feedbackcomment"];
