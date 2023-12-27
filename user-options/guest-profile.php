@@ -17,15 +17,16 @@
 <body>
 
     <?php 
+     if(!isset($_SESSION["loggedin"])){
+        header("Location: login.php");   
+    }
+    
         include '../tools/navbar.php';
     ?>
 
     <?php
-        if(!isset($_SESSION["loggedin"])){
-            header("Location: login.php");   
-        }
-        
-    $id = $_GET['guest_ID'];
+       
+    $id = $_GET['id'];
     $sql = "SELECT * FROM guest WHERE guest_ID=$id";
 
     $result = $conn->query($sql);
@@ -69,7 +70,7 @@
                         <div class="card-body text-center">
                             <img src="../images/user.png" alt="User Profile Picture" class="rounded-circle img-fluid" style="width: 150px;">
                             <br><br>
-                            <?php echo"".$row[""].""?>
+                            <?php echo"".$_SESSION['username'].""?>
                         </div>
                     </div>
                     <div class="card mb-4 mb-lg-0">
@@ -82,10 +83,10 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <p class="mb-0">Username</p>
+                                    <p class="mb-0">Name</p>
                                 </div>
                                 <div class="col-sm-9">
-                                    <p class="text-muted mb-0"><?php echo"".$_SESSION["username"].""?></p>
+                                    <p class="text-muted mb-0"><?php echo"".$row["FName"]."&nbsp".$row["LName"].""?></p>
                                 </div>
                             </div>
                             <hr>
@@ -94,7 +95,7 @@
                                     <p class="mb-0">Email</p>
                                 </div>
                                 <div class="col-sm-9">
-                                    <p class="text-muted mb-0"><?php echo"".$_SESSION["email"].""?></p>
+                                    <p class="text-muted mb-0"><?php echo"".$row["email"].""?></p>
                                 </div>
                             </div>
                             <hr>
