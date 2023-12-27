@@ -9,11 +9,10 @@ if (!isset($_SESSION['id'])) {
 if (isset($_GET['rid'])) {
     $room_id = $_GET['rid'];
     $guestid = $_SESSION['id'];
-    $payment_money=100; //TODO :make textbox called payment take the amount of money from user
-    $meal_type=$_POST['meal_type'];//TODO :make textbox called meal_type take the meal_type from user
+    $payment_money=100; 
+    $meal_type=$_GET['mealType'];
     $checkin_date = date("Y-m-d"); // checkin_date is today
-    $checkout_date=$_POST['checkout_date'];//TODO :make textbox called checkout_date take the checkout_date from user
-    $address=$_POST['address'];//TODO:make textbox called address take the address from user
+    $checkout_date=$_POST['checkOutDate'];
 
     
 
@@ -22,26 +21,26 @@ if (isset($_GET['rid'])) {
     $checkResult = $conn->query($checkEnrollmentQuery);
 
     if ($checkResult->num_rows == 0) { // if checked room is empty make the booking for the user
-        $insertQuery = "INSERT INTO `booking`( `payment`, `meal_type`, `checkin_date`, `checkout_date`, `address`, `guest_ID`) VALUES ($payment_money,'$meal_type','$checkin_date','$checkout_date','$address',$guestid);";
+        $insertQuery = "INSERT INTO `booking`( `payment`, `meal_type`, `checkin_date`, `checkout_date`, `guest_ID`) VALUES ($payment_money,'$meal_type','$checkin_date','$checkout_date',$guestid);";
         
         if ($conn->query($insertQuery) === TRUE) {
             $insertQuery2="INSERT INTO `book_room`(`Room_ID`, `Booking_ID`) VALUES ($room_id,(SELECT max(Booking_ID) FROM booking));";
             if ($conn->query($insertQuery2) === TRUE)
             {
-             header("Location: room-details.php?status=success&rid=$room_id"); // donot  understand what that doing
+             header("Location: room-details.php?status=success&rid=$room_id"); 
             exit();
-            }
-
-        } else {
-            header("Location: room-details.php?status=error&message=" . urlencode($conn->error));// donot  understand location : etc
+            }else {
+            header("Location: room-details.php?status=error&message=" . urlencode($conn->error));
             exit();
-        }
-    } else {
-        header("Location: room-details.php?status=already_booked&rid=$room_id");// donot  understand what that doing
+            }}else {
+        header("Location: room-details.php?status=error&message=" . urlencode($conn->error));
         exit();
-    }} else {
-        header("Location: room-details.php?status=invalid_rid");// donot  understand what that doing
-exit();
+        } 
+ }else {
+    header("Location: room-details.php?status=already_booked&rid=$room_id");
+    exit();
+ }
+
 }
 
 $conn->close();

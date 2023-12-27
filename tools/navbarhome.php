@@ -195,13 +195,14 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["us
         <ul class='navigation'>
         <li class='parent'><a class='link' href='index.php'>Home</a></li>
         <li class='parent'><a class='link' href='handle-req.php'>Handle Requests</a></li>
+      
+      <li class='parent'>
+      <a class='link' href='user-options/logout.php'>Log Out</a>
+      </li>
       <li class='parent'>
       <a class='link' href='user-options/staff-profile.php?ID=". $_SESSION["id"]."'>
               <img src='images/user.png' height='40vh' alt='user'>
       </a></li>
-      <li class='parent'>
-      <a class='link' href='user-options/logout.php'>Log Out</a>
-      </li>
     </ul>
     </div>
     </div>
@@ -227,13 +228,14 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["us
       <li class='parent'><a class='link' href='receptionists/bookings.php'>Bookings</a></li>
       <li class='parent'><a class='link' href='receptionists/complains.php'>Handle Complains</a></li>
       <li class='parent'><a class='link' href='receptionists/manageroomservicerequest.php'>Requests</a></li>
-      <li class='parent'>
-    <a class='link' href='user-options/staff-profile.php?ID=". $_SESSION["id"]."'>
-            <img src='images/user.png' height='30vh' alt='user'>
-    </a></li>
+     
                   <li class='parent'>
                       <a class='link' href='user-options/logout.php'>Log Out</a>
                   </li>
+                  <li class='parent'>
+                  <a class='link' href='user-options/staff-profile.php?ID=". $_SESSION["id"]."'>
+                          <img src='images/user.png' height='30vh' alt='user'>
+                  </a></li>
       </ul>
               
       </div>
@@ -260,15 +262,15 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["us
       <li class='parent'><a class='link' href='manager/setbonus.php'>Bonus</a></li>
       <li class='parent'><a class='link' href='manager/setsalary.php'>Salary</a></li>
       <li class='parent'><a class='link' href='manager/track-sponsorship.php'>Sponsors</a></li>
-      <li class='parent'>
-    <a class='link' href='user-options/staff-profile.php?ID=". $_SESSION["id"]."'>
-            <img src='images/user.png' height='30vh' alt='user'>
-    </a></li>
+      
                   <li class='parent'>
                       <a class='link' href='user-options/logout.php'>Log Out</a>
                   </li>
       </ul>
-              
+      <li class='parent'>
+      <a class='link' href='user-options/staff-profile.php?ID=". $_SESSION["id"]."'>
+              <img src='images/user.png' height='30vh' alt='user'>
+      </a></li>
       </div>
   </div>
 </nav>";

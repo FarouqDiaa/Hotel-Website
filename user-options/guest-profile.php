@@ -10,19 +10,27 @@
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../icons/fontawesome/css/all.min.css">
     <link href="https://fonts.googleapis.com/css?family=Lato:700%7CMontserrat:400,600" rel="stylesheet">
-	<link type="text/css" rel="stylesheet" href="../css/style.css"/>
+    <link type="text/css" rel="stylesheet" href="../css/style.css"/>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 
     <?php 
         include '../tools/navbar.php';
-        echo'<br>';
     ?>
 
     <?php
         if(!isset($_SESSION["loggedin"])){
             header("Location: login.php");   
         }
+        
+    $id = $_GET['guest_ID'];
+    $sql = "SELECT * FROM guest WHERE guest_ID=$id";
+
+    $result = $conn->query($sql);
+
+    $row = $result->fetch_assoc();
 
         if(isset($_POST['delete_button']) ){  // TODO : make input called delete button to delete_button  when user click on it  
            
@@ -41,7 +49,7 @@
         }
     
     ?>
-
+    <br>
     <section style="background-color: white;">
         <div class="container py-5">
             <div class="row">
@@ -49,7 +57,7 @@
                     <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
                         <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item"><a href="../index.php">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Guest Profile</li>
+                            <li class="breadcrumb-item active" aria-current="page">User Profile</li>
                         </ol>
                     </nav>
                 </div>
@@ -61,7 +69,7 @@
                         <div class="card-body text-center">
                             <img src="../images/user.png" alt="User Profile Picture" class="rounded-circle img-fluid" style="width: 150px;">
                             <br><br>
-                            <?php echo"".$_SESSION["username"].""?>
+                            <?php echo"".$row[""].""?>
                         </div>
                     </div>
                     <div class="card mb-4 mb-lg-0">
@@ -135,5 +143,7 @@
         </div>
     </section>
     <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 </body>
 </html>

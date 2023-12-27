@@ -38,6 +38,16 @@
 	<link type="text/css" rel="stylesheet" href="../css/style.css"/>
 </head>
 <body style="background-color:#B00200">
+<div class="row">
+                <div class="col">
+                    <nav aria-label="breadcrumb" class="rounded-3 p-3 mb-4">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="../index.php">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Room Details</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
     <br>
     <div class="container mt-5">
         <div class="row">
@@ -51,38 +61,56 @@
                 <p style='color: white;'><strong>Price:</strong> <?php echo $row['PricePerNight']; ?></p>
                 <p style='color: white;'><strong>Number Of Beds:</strong> <?php echo $row['num of beds']; ?></p>
                 <p style='color: white;'><strong>Capacity:</strong> <?php echo $row['capacity']; ?></p>
-                <a href="book.php?rid=<?php echo $row['Room_ID']; ?>" class="btn btn-danger" data-toggle="modal" data-target="#bookingModal">Book Now</a>
+                <button class="btn btn-danger" onclick="openBookingModal()">Book Now</button>
             </div>
         </div>
     </div>
     <div class="modal fade" id="bookingModal" tabindex="-1" role="dialog" aria-labelledby="bookingModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="bookingModalLabel">Book Now</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bookingModalLabel">Book Now</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeBookingModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" class="form-control" placeholder="Meal Type" name="type">
-                    <select class="form-control mt-2">
+                    <select class="form-control mt-2" name="type" id="mealType">
                         <option selected> Select Meal Type</option>
                         <option value="Breakfast">Breakfast</option>
                         <option value="Launch">Launch</option>
                         <option value="Dinner">Dinner</option>
                         <option value="Breakfast-Launch">Breakfast and Launch</option>
                     </select>
-                    <input type="date" class="form-control mt-2" placeholder="Check-out Date" name="cdate">
+                    <input type="date" class="form-control mt-2" id="checkOutDate" placeholder="Check-out Date" name="cdate">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger">Book Now</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick=" closeBookingModal();">Close</button>
+                    <button type="button" class="btn btn-danger" onclick="closeBookingModal(); redirectToBookPage(<?php echo $row['Room_ID']; ?>)">Book Now</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+   function openBookingModal() {
+        $("#bookingModal").modal('show');
+    }
+
+    function closeBookingModal() {
+        $("#bookingModal").modal('hide');
+    }
+    function redirectToBookPage(roomId) {
+        var mealType = document.getElementById('mealType').value;
+        var checkOutDate = document.getElementById('checkOutDate').value;
+
+        var url = "book.php?rid=" + roomId + "&mealType=" + mealType + "&checkOutDate=" + checkOutDate;
+
+        window.location.href = url;
+    }
+</script>
+
 </body>
 </html>
