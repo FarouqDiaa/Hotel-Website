@@ -1,10 +1,10 @@
 <?php
 include '../includes/connection.php';
 
-if (!isset($_SESSION["id"])) {
-    header("Location: ../user-options/login.php");
-    exit();
-}
+// if (!isset($_SESSION["id"])) {
+//     header("Location: ../user-options/login.php");
+//     exit();
+// }
 
 if (isset($_GET['rid'])) {
     $room_id = $_GET['rid'];

@@ -1,5 +1,5 @@
 <?php include '../tools/connection.php';
-include '../tools/navbarhome.php'; ?>
+include '../tools/navbar.php'; ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -55,6 +55,7 @@ include '../tools/navbarhome.php'; ?>
                         Complaint marked as handled with response!
                     </div>
                     ";
+
                 } else {
                     echo "ERROR: $updateSql <br> $conn->error";
                 }
