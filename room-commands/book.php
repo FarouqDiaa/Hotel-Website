@@ -9,7 +9,6 @@ if (!isset($_SESSION['id'])) {
 if (isset($_GET['rid'])) {
     $room_id = $_GET['rid'];
     $guestid = $_SESSION['id'];
-    $payment_money=100;
     $duration=$_GET['duration']; 
     $meal_type=$_GET['mealType'];
     $checkin_date = date("Y-m-d"); // checkin_date is today
@@ -18,15 +17,30 @@ if (isset($_GET['rid'])) {
     $checkResult = $conn->query($checkEnrollmentQuery);
 
     if ($checkResult->num_rows == 0) { // if checked room is empty make the booking for the user
-        $insertQuery = "INSERT INTO `booking`( `payment`, `meal_type`, `checkin_date`, `checkout_date`, `guest_ID`) VALUES ($payment_money,'$meal_type','$checkin_date','$checkout_date',$guestid);";
-        
+        $sql2 = "SELECT `PricePerNight`FROM room WHERE Room_ID=$room_id;";
+        $result = $conn->query($sql2);
+        $row = $result->fetch_assoc();
+        $price_night=$row["PricePerNight"];
+        $payment=$duration * $price_night;
+       
+        $insertQuery = "INSERT INTO `booking`( `payment`, `meal_type`, `checkin_date`, `checkout_date`, `guest_ID`) VALUES ($payment,'$meal_type','$checkin_date','$checkout_date',$guestid);";
+ 
+       
         if ($conn->query($insertQuery) === TRUE) {
             $insertQuery2="INSERT INTO `book_room`(`Room_ID`, `Booking_ID`) VALUES ($room_id,(SELECT max(Booking_ID) FROM booking));";
             if ($conn->query($insertQuery2) === TRUE)
             {
-             header("Location: room-details.php?status=success&rid=$room_id"); 
+            $upd_availability="UPDATE `room` SET`avalability`=0 WHERE Room_ID=$room_id";
+            if ($conn->query($upd_availability) === TRUE)    
+            { header("Location: room-details.php?status=success&rid=$room_id"); 
             exit();
-            }else {
+            }
+            else 
+            {
+                echo "ERROR: $upd_availability <br> $conn->error";
+            }
+            }
+            else {
             header("Location: room-details.php?status=error&message=" . urlencode($conn->error));
             exit();
             }}else {
