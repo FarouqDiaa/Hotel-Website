@@ -104,9 +104,11 @@
     }
     function redirectToBookPage(roomId) {
         var mealType = document.getElementById('mealType').value;
-        var checkOutDate = document.getElementById('checkOutDate').value;
+        var originalDate = document.getElementById('checkOutDate').value;
+        var dateObject = new Date(originalDate);
+        var formattedDate = dateObject.toISOString().slice(0, 10);
 
-        var url = "book.php?rid=" + roomId + "&mealType=" + mealType + "&checkOutDate=" + checkOutDate;
+        var url = "book.php?rid=" + roomId + "&mealType=" + mealType + "&checkOutDate=" + formattedDate;
 
         window.location.href = url;
     }

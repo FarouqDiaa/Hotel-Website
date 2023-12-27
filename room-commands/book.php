@@ -12,11 +12,7 @@ if (isset($_GET['rid'])) {
     $payment_money=100; 
     $meal_type=$_GET['mealType'];
     $checkin_date = date("Y-m-d"); // checkin_date is today
-    $checkout_date=$_POST['checkOutDate'];
-
-    
-
-
+    $checkout_date=$_GET['checkOutDate'];
     $checkEnrollmentQuery = "SELECT * FROM `book_room` WHERE Room_ID=$room_id"; // check if selected room is empty 
     $checkResult = $conn->query($checkEnrollmentQuery);
 
