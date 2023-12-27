@@ -35,32 +35,35 @@
         <h1 style="text-align: center; color: #FFF; padding: 20px;" id="sponsors">Sponsors</h1>
 
         <div class="container mt-5">
-            <div id="sponsorsCarousel" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="images/dd-sponsor.jpg" class="d-block w-100" alt="Sponsor 1" >
+    <div id="sponsorsCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <?php
+            $sql = "SELECT * FROM `sponser`";
+            $result = $conn->query($sql);
+
+            $firstItem = true;
+
+            while ($row = $result->fetch_assoc()) {
+                echo "
+                    <div class='carousel-item " . ($firstItem ? 'active' : '') . "'>
+                        <img src='images/" . $row['pic'] . "' class='d-block w-100' alt='Sponsor'>
                     </div>
-                    <div class="carousel-item">
-                        <img src="images/spiro-sponsor.jpg" class="d-block w-100" alt="Sponsor 2">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="images/v7-sponsor.jpg" class="d-block w-100" alt="Sponsor 3">
-                    </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#sponsorsCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#sponsorsCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
+                ";
+
+                $firstItem = false;
+            }
+            ?>
         </div>
 
-        <br>
-        <br>
-        <br>
+        <button class="carousel-control-prev" type="button" data-bs-target="#sponsorsCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#sponsorsCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
 </div>
     </div>
     
@@ -73,75 +76,181 @@
     </div>
     <h1 style="text-align: center; color: #FFF; padding: 20px;" id="events">Events</h1>
     <div class="con2" style="background-color: #900200">
-    <br><div class="row">
-    <div class="col-md-6">
-        <div style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); padding: 20px; border-radius: 5px; margin-bottom: 20px; background-color: rgba(0, 0, 0, 0.5); color: white;">
-            <h3>Event 1</h3>
-            <p>Event desc</p>
-            <button class="btn btn-danger">More Details</button>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); padding: 20px; border-radius: 5px; margin-bottom: 20px; background-color: rgba(0, 0, 0, 0.5); color: white;">
-            <h3>Event 2</h3>
-            <p>Event desc</p>
-            <button class="btn btn-danger">More Details</button>
-        </div>
-    </div>
-    </div>
-    </div>
-</div>
-
-
-<div class="con2" style="background-color:#B00200">
-    <h1 style="text-align: center; color: #FFF; padding: 20px;" id="Offers">Offers</h1>
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-6">
-                <div style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); padding: 20px; border-radius: 5px; margin-bottom: 20px; display:flex; background-color: rgba(0, 0, 0, 0.5); color: white;">
-                <img src="" alt="Offer" style="max-width: 100%; height: 20vh;">&nbsp&nbsp&nbsp
-                <div><h3>Offer 1</h3><p>Offer desc</p></div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); padding: 20px; border-radius: 5px; margin-bottom: 20px; display:flex; background-color: rgba(0, 0, 0, 0.5); color: white;">
-                <img src="" alt="Offer" style="max-width: 100%; height: 20vh;">&nbsp&nbsp&nbsp
-                <div><h3>Offer 2</h3><p>Offer desc</p></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-    </div>
-<?php
-
-/*
-                            $sql = "SELECT * FROM";
+    <br>
+    <div class="row">
+    <?php
+                            $sql = "SELECT * FROM `event`";
                             $result = $conn->query($sql);
-                            $courseCount = 0;
+                            $eventCount = 0;
                             while($row = $result->fetch_assoc()){
-                                if ($courseCount % 3 === 0) {
-                                    echo '<div class="w-100"></div><br>'; 
+                                if ($eventCount % 3 === 0) {
+                                    echo '<br>'; 
                                 }
                                 echo "
-                                    <div class='col-3'>
-                                        <div class='card' style='box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);'>
-                                            <img src='coursesimg/". $row["course_image"] ."' class='card-img-top' alt='". $row["course_image"] ."' style='height:40vh;' />
-                                            <div class='card-body'>
-                                                <h5 class='card-title'>". $row["course_name"] ."</h5>
-                                                <p class='card-text'>". $row["course_desc"] ."</p>
-                                                <a href='courseoptions/coursedetails.php?cid=". $row["course_id"] ."' class='btn btn-primary'>View Details</a>
-                                            </div>
+                                <div class='col-md-6'>
+                                    <div class='card mx-auto' style='box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); padding: 20px; border-radius: 5px; margin-bottom: 20px; background-color: rgba(0, 0, 0, 0.5); color: white; width:60vh;'>
+                                        <div class='card-body text-center'>
+                                            <h3 class='card-title' style='color: white;'>". $row["event_name"] ."</h3>
+                                            <h3 class='card-title' style='color: white;'>". $row["eventDate"] ."</h3>
+                                            <p class='card-text'>". $row["description"] ."</p>
                                         </div>
                                     </div>
-                                ";
-                                $courseCount++;
+                                </div>
+                            ";
+                            
+                            
+                                $eventCount++;
 
                             }
 
-            */
+            
             ?>
+    
+    </div>
+    </div>
+    <h1 style="text-align: center; color: #FFF; padding: 20px;" id="Offers">Offers</h1>
+    <div class="con2" style="background-color:#B00200">
+    <br>
+    <div class="container mt-5">
+        <div class="row">
+        <?php
+                            $sql = "SELECT * FROM `offer`";
+                            $result = $conn->query($sql);
+                            $eventCount = 0;
+                            while($row = $result->fetch_assoc()){
+                                if ($eventCount % 3 === 0) {
+                                    echo '<br>'; 
+                                }
+                                echo "
+                                <div class='col-md-6'>
+                                    <div class='card mx-auto' style='box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); padding: 20px; border-radius: 5px; margin-bottom: 20px; background-color: rgba(0, 0, 0, 0.5); color: white; width:60vh;'>
+                                        <div class='card-body text-center'>
+                                            <h3 class='card-title' style='color: white;'>". $row["offer_name"] ."</h3>
+                                            <h3 class='card-title' style='color: white;'>". $row["discount_percentage"] ."%</h3>
+                                            <h5 class='card-title' style='color: white;'> Start Date: ". $row["start_date"] ."</h5>
+                                            <h5 class='card-title' style='color: white;'> Start Date: ". $row["start_date"] ."</h5>
+                                            <p class='card-text'>". $row["desription"] ."</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ";
+                            
+                            
+                                $eventCount++;
+
+                            }
+
+            
+            ?>
+    </div>
+    </div>
+</div>
+<h1 style="text-align: center; color: #FFF; padding: 20px;" id="Singlerooms">Single Rooms</h1>
+<div class="con2" style="background-color:#B00200">
+    <br>
+    <div class="row">
+    <?php
+                            $sql = "SELECT * FROM room WHERE capacity = 1";
+                            $result = $conn->query($sql);
+                            $roomCount = 0;
+                            while($row = $result->fetch_assoc()){
+                                if ($roomCount % 3 === 0) {
+                                    echo '<br>'; 
+                                }
+                                echo "
+                                <div class='col-md-6'>
+                                    <div class='card mx-auto' style='box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); padding: 20px; border-radius: 5px; margin-bottom: 20px; background-color: rgba(0, 0, 0, 0.5); color: white; height:60vh; width:60vh;'>
+                                        <img src='images/". $row["room_pic"] ."' class='card-img-top mx-auto d-block' alt='Image not available' style='height:40vh; width:40vh;' />
+                                        <div class='card-body text-center'>
+                                            <h3 class='card-title' style='color: white;''>". $row["Room_ID"] ."</h3>
+                                            <p class='card-text'>". $row["room_desription"] ."</p>
+                                            <a href='room-commands/room-details.php?rid=". $row["Room_ID"] ."' class='btn btn-danger'>View Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            ";
+                            
+                            
+                                $roomCount++;
+
+                            }
+
+            
+            ?>
+    
+    </div>
+    </div>
+    <h1 style="text-align: center; color: #FFF; padding: 20px;" id="Doublerooms">Double Rooms</h1>
+<div class="con2" style="background-color:#B00200">
+    <br>
+    <div class="row">
+    <?php
+                            $sql = "SELECT * FROM room WHERE capacity = 2";
+                            $result = $conn->query($sql);
+                            $roomCount = 0;
+                            while($row = $result->fetch_assoc()){
+                                if ($roomCount % 3 === 0) {
+                                    echo '<br>'; 
+                                }
+                                echo "
+                                <div class='col-md-6'>
+                                    <div class='card mx-auto' style='box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); padding: 20px; border-radius: 5px; margin-bottom: 20px; background-color: rgba(0, 0, 0, 0.5); color: white; height:60vh; width:60vh;'>
+                                        <img src='images/". $row["room_pic"] ."' class='card-img-top mx-auto d-block' alt='Image not available' style='height:40vh; width:40vh;' />
+                                        <div class='card-body text-center'>
+                                            <h3 class='card-title' style='color: white;''>". $row["Room_ID"] ."</h3>
+                                            <p class='card-text'>". $row["room_desription"] ."</p>
+                                            <a href='room-commands/room-details.php?rid=". $row["Room_ID"] ."' class='btn btn-danger'>View Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            ";
+                            
+                            
+                                $roomCount++;
+
+                            }
+
+            
+            ?>
+    
+    </div>
+    </div>
+    <h1 style="text-align: center; color: #FFF; padding: 20px;" id="Sweets">Sweets</h1>
+<div class="con2" style="background-color:#B00200">
+    <br>
+    <div class="row">
+    <?php
+                            $sql = "SELECT * FROM room WHERE capacity > 2";
+                            $result = $conn->query($sql);
+                            $roomCount = 0;
+                            while($row = $result->fetch_assoc()){
+                                if ($roomCount % 3 === 0) {
+                                    echo '<br>'; 
+                                }
+                                echo "
+                                <div class='col-md-6'>
+                                    <div class='card mx-auto' style='box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); padding: 20px; border-radius: 5px; margin-bottom: 20px; background-color: rgba(0, 0, 0, 0.5); color: white; height:60vh; width:60vh;'>
+                                        <img src='images/". $row["room_pic"] ."' class='card-img-top mx-auto d-block' alt='Image not available' style='height:40vh; width:40vh;' />
+                                        <div class='card-body text-center'>
+                                            <h3 class='card-title' style='color: white;''>". $row["Room_ID"] ."</h3>
+                                            <p class='card-text'>". $row["room_desription"] ."</p>
+                                            <a href='room-commands/room-details.php?rid=". $row["Room_ID"] ."' class='btn btn-danger'>View Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            ";
+                            
+                            
+                                $roomCount++;
+
+                            }
+
+            
+            ?>
+    
+    </div>
+    </div>
+</div>
     <script src="js/bootstrap.bundle.min.js"></script>
 </body>
 <?php include 'tools/footer.php'?>

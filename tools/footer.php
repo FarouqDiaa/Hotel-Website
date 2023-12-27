@@ -4,7 +4,7 @@
         <div class="row text-center d-flex justify-content-center pt-5" >
           <div class="col-md-2">
             <h6 class="text-uppercase font-weight-bold">
-              <a href="aboutus.php" class="text-white" >About us</a>
+              <a href="about-us.php" class="text-white" >About us</a>
             </h6>
           </div>
         </div>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Course</title>
+    <title>Add Room</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../icons/fontawesome/css/all.min.css">
     <link href="https://fonts.googleapis.com/css?family=Lato:700%7CMontserrat:400,600" rel="stylesheet">
@@ -14,18 +14,18 @@
 <?php 
 include '../tools/connection.php';
 include '../tools/navbar.php';
-/*
 if(isset($_POST["room_submit"])){
-    $course_name = $_POST["course_name"];
-    $course_price = $_POST["course_price"];
-    $course_code = $_POST["course_code"];
-    $course_instructor = $_POST["course_instructor"];
-    $course_desc = $_POST["course_desc"];
-    $course_image = $_FILES["course_image"]["name"];
-    $c_img_tmp = $_FILES["course_image"]["tmp_name"];
-    $folder = "../images/".$course_image;
+    $room_id = $_POST["room_ID"];
+    $room_price = $_POST["price"];
+    $numofbeds = $_POST["nbeds"];
+    $capacity = $_POST["cap"];
+    $desc = $_POST["desc"];
+    $room_image = $_FILES["room_image"]["name"];
+    $room_img_tmp = $_FILES["room_image"]["tmp_name"];
+    $folder = "../images/".$room_image;
+    $availability = 1;
 
-    $sql = "INSERT INTO courses (course_name, course_price, course_desc, course_image, course_code) VALUES ('$course_name', $course_price, '$course_desc', '$course_image', '$course_code')";
+    $sql = "INSERT INTO room (Room_ID, room_pic, room_desription, `num of beds`, PricePerNight, avalability, capacity) VALUES ($room_id,'$room_image', '$desc' ,$numofbeds , $room_price, $availability, $capacity);";
 
     if($conn->query($sql) == true){
         echo "
@@ -34,53 +34,49 @@ if(isset($_POST["room_submit"])){
             Your course has been added successfully!
         </div>
         ";
-        move_uploaded_file($c_img_tmp, $folder);
+        move_uploaded_file($room_img_tmp, $folder);
     }
     else{
         echo "ERROR: $sql <br> $conn->error";
     }
-}*/
+}
 ?>
 <br>
     <div class="container mt-5" >
         <h1>Add Room</h1>
         <form action="" method="post" enctype="multipart/form-data">
             <div class="form-group">
-                <label for="name">Course Name:</label>
-                <input type="text" class="form-control" id="name" name="course_name" required>
+                <label for="name">Room ID:</label>
+                <input type="number" class="form-control" id="number" name="room_ID" required>
             </div>
             <div class="form-group">
-                <label for="price">Price:</label>
-                <input type="number" class="form-control" id="price" name="course_price" required>
+                <label for="price">PricePerNight:</label>
+                <input type="number" class="form-control" id="price" name="price" required>
             </div>
             <div class="form-group">
-                <label for="code">Course Code:</label>
-                <input type="text" class="form-control" id="code" name="course_code" required>
+                <label for="nbeds">Number of beds:</label>
+                <input type="number" class="form-control" id="nbeds" name="nbeds" required>
             </div>
             <div class="form-group">
-                <label for="instructor">Instructor:</label>
-                <select class="form-control" aria-label="Instructor" name="course_instructor" required>
-                    <option selected> Select Instructor</option>
-                    <option value="1"> Inst. 1</option>
-                    <option value="2"> Inst. 2</option>
-                    <option value="3"> Inst. 3</option>
-                    <option value="4"> Inst. 4</option>
-                    <option value="5"> Inst. 5</option>
-                    <option value="6"> Inst. 6</option>
+                <label for="capacity">Capacity:</label>
+                <select class="form-control" aria-label="Capacity" name="cap" required>
+                    <option selected> Select type</option>
+                    <option value="1"> Single</option>
+                    <option value="2"> Double</option>
+                    <option value="4"> Sweet</option>
                 </select>
-
             </div>
             <div class="form-group">
                 <label for="description">Description:</label>
-                <textarea class="form-control" id="description" name="course_desc" rows="4" required></textarea>
+                <textarea class="form-control" id="description" name="desc" rows="4" required></textarea>
             </div>
             <br>
             <div class="form-group">
-                <label for="image">Course Image:</label>
-                <input type="file" class="form-control-file" id="customfile" name="course_image" required>
+                <label for="image">Room Image:</label>
+                <input type="file" class="form-control-file" id="customfile" name="room_image" required>
             </div>
             <br>
-            <input type="submit" class="btn btn-primary" name="course_submit" value="Add Course">
+            <input type="submit" class="btn btn-primary" name="room_submit" value="Add Room">
         </form>
     </div>
     <script src="../js/bootstrap.bundle.min.js"></script>
