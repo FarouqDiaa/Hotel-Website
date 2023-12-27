@@ -29,6 +29,8 @@
 .navigation {
     display: flex;
     list-style-type: none;
+    
+    margin-top: 10px;
 }
 
 .li {
@@ -162,7 +164,8 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["us
           <a class='link' href='#'><i class='fas fa-minus'></i> Services <i class='fas fa-plus'></i></a>
           <ul class='subnavigation'>
             <li><a class='link' href='user-options/makecomplain.php'>Complaints</a></li>
-            <li><a class='link' href='user-options/requestroomservice.php'>Requested Service</a></li>
+            <li><a class='link' href='user-options/requestroomservice.php'>Requeste Service</a></li>
+            <li><a class='link' href='statistics/gueststatistics.php'>Stats</a></li>
           </ul>
         </li>
       
@@ -259,18 +262,17 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["us
       <ul class='navigation'>
       <li class='parent'><a class='link' href='index.php'>Home</a></li>
       <li class='parent'><a class='link' href='manager/mangescheduleevents.php'>Events</a></li>
-      <li class='parent'><a class='link' href='manager/setbonus.php'>Bonus</a></li>
-      <li class='parent'><a class='link' href='manager/setsalary.php'>Salary</a></li>
       <li class='parent'><a class='link' href='manager/track-sponsorship.php'>Sponsors</a></li>
-      
-                  <li class='parent'>
-                      <a class='link' href='user-options/logout.php'>Log Out</a>
-                  </li>
-      </ul>
+      <li class='parent'><a class='link' href='dashboard.php'>dashboard</a></li>
+      <li class='parent'><a class='link' href='statistics/managertatistics.php'>Stats</a></li>
+      <li class='parent'>
+      <a class='link' href='user-options/logout.php'>Log Out</a>
+      </li>
       <li class='parent'>
       <a class='link' href='user-options/staff-profile.php?id=". $_SESSION["id"]."'>
               <img src='images/user.png' height='30vh' alt='user'>
       </a></li>
+      </ul>
       </div>
   </div>
 </nav>";
