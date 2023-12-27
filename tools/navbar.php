@@ -169,7 +169,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["us
                     </li>
                     
       <li class='parent'>
-      <a class='link' href='../user-options/guest-profile.php?guest_ID=". $_SESSION["id"]."'>
+      <a class='link' href='../user-options/guest-profile.php?id=". $_SESSION["id"]."'>
               <img src='../images/user.png' height='30vh' alt='user'>
       </a></li>
                
@@ -200,7 +200,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["us
       <a class='link' href='../user-options/logout.php'>Log Out</a>
       </li>
       <li class='parent'>
-      <a class='link' href='../user-options/staff-profile.php?ID=". $_SESSION["id"]."'>
+      <a class='link' href='../user-options/staff-profile.php?id=". $_SESSION["id"]."'>
               <img src='../images/user.png' height='40vh' alt='user'>
       </a></li>
     </ul>
@@ -233,7 +233,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["us
                       <a class='link' href='../user-options/logout.php'>Log Out</a>
                   </li>
                   <li class='parent'>
-    <a class='link' href='../user-options/staff-profile.php?ID=". $_SESSION["id"]."'>
+    <a class='link' href='../user-options/staff-profile.php?id=". $_SESSION["id"]."'>
             <img src='../images/user.png' height='30vh' alt='user'>
     </a></li>
       </ul>
@@ -267,7 +267,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["us
                       <a class='link' href='../user-options/logout.php'>Log Out</a>
                   </li>
                   <li class='parent'>
-    <a class='link' href='../user-options/staff-profile.php?ID=". $_SESSION["id"]."'>
+    <a class='link' href='../user-options/staff-profile.php?id=". $_SESSION["id"]."'>
             <img src='../images/user.png' height='30vh' alt='user'>
     </a></li>
       </ul>

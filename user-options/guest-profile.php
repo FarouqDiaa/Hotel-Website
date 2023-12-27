@@ -101,10 +101,10 @@
                             <hr>
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <p class="mb-0">Number</p>
+                                    <p class="mb-0">Phone Number</p>
                                 </div>
                                 <div class="col-sm-9">
-                                    <p class="text-muted mb-0">+201234567890</p>
+                                    <p class="text-muted mb-0"><?php echo"".$row["phone"].""?></p>
                                 </div>
                             </div>
                             <hr>
@@ -113,9 +113,28 @@
                                     <p class="mb-0">Address</p>
                                 </div>
                                 <div class="col-sm-9">
-                                    <p class="text-muted mb-0">New Cairo</p>
+                                    <p class="text-muted mb-0"><?php echo"".$row["address"].""?></p>
                                 </div>
                             </div>
+                            
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Passport ID</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0"><?php echo"".$row["passport_ID"].""?></p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Passport ID</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0"><?php echo"".$row["passport_ID"].""?></p>
+                                </div>
+                            </div>
+                            <hr>
                         </div>
                     </div>
                     <div class="row">
