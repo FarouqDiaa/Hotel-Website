@@ -2,28 +2,23 @@
 include '../tools/connection.php';
 include '../tools/navbar.php';
 
-$id = $_GET['rid'];
-$sql = "SELECT * FROM room WHERE Room_ID=$id";
-
+$room_id = $_GET['rid'];
+$sql = "SELECT * FROM room WHERE Room_ID=$room_id";
 $result = $conn->query($sql);
-
 $row = $result->fetch_assoc();
 if (isset($_GET['status'])) {
     $status = $_GET['status'];
 
-    $messages = [
-        'success' => 'Successfully Booked!',
-        'error' => 'Error booking this room: ' . urldecode($_GET['message']),
-        'already_booked' => 'This room is already booked.',
-        'invalid_rid' => 'Invalid Room ID.',
-    ];
-
-    $alertClass = 'alert-warning';
     if ($status === 'success') {
-        $alertClass = 'alert-success';
+        echo "<br><br><div class='alert alert-success' role='alert'>Successfully Enrolled!</div>";
+    } elseif ($status === 'error') {
+        $message = urldecode($_GET['message']);
+        echo "<br><br><div class='alert alert-warning' role='alert'>Error enrolling in the course: $message</div>";
+    } elseif ($status === 'already_enrolled') {
+        echo "<br><br><div class='alert alert-warning' role='alert'>You are already enrolled in this course.</div>";
+    } elseif ($status === 'invalid_cid') {
+        echo "<br><br><div class='alert alert-warning' role='alert'>Invalid course ID.</div>";
     }
-
-    echo "<br><div class='alert $alertClass' role='alert'>" . $messages[$status] . "</div>";
 }
 
 ?>
@@ -39,6 +34,9 @@ if (isset($_GET['status'])) {
     <link rel="stylesheet" href="../icons/fontawesome/css/all.min.css">
     <link href="https://fonts.googleapis.com/css?family=Lato:700%7CMontserrat:400,600" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="../css/style.css" />
+
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 
 <body style="background-color:#B00200">
@@ -90,44 +88,45 @@ if (isset($_GET['status'])) {
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <?php if ($_SESSION['id'] == 3 || $_SESSION['id'] == 2): ?>
-                        <select class="form-control mt-2" name="guestSelector" id="guestSelector">
-                            <?php
-                            $guestQuery = "SELECT * FROM guest";
-                            $guestResult = $conn->query($guestQuery);
-
-                            while ($guestRow = $guestResult->fetch_assoc()) {
-                                echo "<option value='{$guestRow['guest_ID']}'>{$guestRow['FName']} {$guestRow['LName']}</option>";
-                            }
-                            ?>
+                <form action="book.php" method="GET">
+                    <div class="modal-body">
+                        <select class="form-control mt-2" name="type" id="mealType">
+                            <option selected> Select Meal Type</option>
+                            <option value="Breakfast">Breakfast</option>
+                            <option value="Launch">Launch</option>
+                            <option value="Dinner">Dinner</option>
+                            <option value="Breakfast-Launch">Breakfast and Launch</option>
                         </select>
-                    <?php endif; ?>
-                    <select class="form-control mt-2" name="type" id="mealType">
-                        <option selected> Select Meal Type</option>
-                        <option value="Breakfast">Breakfast</option>
-                        <option value="Launch">Launch</option>
-                        <option value="Dinner">Dinner</option>
-                        <option value="Breakfast-Launch">Breakfast and Launch</option>
-                    </select>
-                    <input type="date" class="form-control mt-2" id="checkOutDate" placeholder="Check-out Date"
-                        name="cdate">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                        onclick=" closeBookingModal();">Close</button>
-                    <button type="button" class="btn btn-danger"
+                        <input type="date" class="form-control mt-2" id="checkOutDate" placeholder="Check-out Date"
+                            name="cdate">
+                        <?php if ($_SESSION['usertype'] == 3 || $_SESSION['usertype'] == 2): ?>
+                            <select class="form-control mt-2" name="guestSelector" id="guestSelector">
+                                <?php
+                                $guestQuery = "SELECT * FROM guest";
+                                $guestResult = $conn->query($guestQuery);
+
+                                while ($guestRow = $guestResult->fetch_assoc()) {
+                                    echo "<option value='{$guestRow['guest_ID']}'>{$guestRow['FName']} {$guestRow['LName']}</option>";
+                                }
+                                ?>
+                            </select>
+                        <?php endif; ?>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            onclick="closeBookingModal();">Close</button>
+                        <button type="button" class="btn btn-danger"
                         onclick="closeBookingModal(); redirectToBookPage(<?php echo $row['Room_ID']; ?>)">Book
                         Now</button>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
-    <script src="../js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
     <script>
-        function openBookingModal() {
+         function openBookingModal() {
             $("#bookingModal").modal('show');
         }
 
@@ -141,19 +140,16 @@ if (isset($_GET['status'])) {
             var dateObject = new Date(originalDate);
             var formattedDate = dateObject.toISOString().slice(0, 10);
 
-            const today = new Date();
-            const timeDifference = dateObject - today;
-            const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+            var url = "book.php?rid=" + roomId + "&mealType=" + mealType + "&checkOutDate=" + formattedDate;
 
-            var url = "book.php?rid=" + roomId + "&mealType=" + mealType + "&checkOutDate=" + formattedDate + "&duration=" + daysDifference;
-
-            <?php if ($_SESSION['id'] == 3 || $_SESSION['id'] == 2): ?>
+            <?php if ($_SESSION['usertype'] == 3 || $_SESSION['usertype'] == 2): ?>
                 var guestId = document.getElementById('guestSelector').value;
                 url += "&guestId=" + guestId;
             <?php endif; ?>
 
             window.location.href = url;
-        }    </script>
+        }
+    </script>
 
 </body>
 
