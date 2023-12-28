@@ -13,6 +13,7 @@
     <link type="text/css" rel="stylesheet" href="../css/style.css" />
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="../js/bootstrap.bundle.min.js"></script>
+
 </head>
 
 <body>
@@ -41,7 +42,7 @@
         WHERE `username` IN (SELECT `username` FROM `has_account` WHERE guest_ID = $id);"; // deleting user profile
         $conn->query($sql);
         $sql = "DELETE FROM `guest` WHERE guest_ID=$guest_ID"; // deleting user profile
-
+    
         if ($conn->query($sql) == true) {
             echo "
                 <div class='alert alert-success' role='alert'>
@@ -190,8 +191,28 @@
                                 </div>
                             </div>
                             <hr>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Password</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0" id="currentPassword">
+                                        <?php echo "" . $_SESSION['password'] . "" ?>
+                                    </p>
+                                    <input type="password" class="form-control" id="newPassword" style="display: none;">
+                                    <button class="btn btn-primary" id="editPasswordBtn" onclick="togglePasswordEdit()">
+                                        Edit
+                                    </button>
+                                    <button class="btn btn-success" id="savePasswordBtn" style="display: none;"
+                                        onclick="saveNewPassword()">
+                                        Save
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card mb-4 mb-md-0">
@@ -215,20 +236,25 @@
                                                     </thead>
                                                     <tbody>";
 
+                                            $bookingIDs = [];
+
                                             while ($row = $result->fetch_assoc()) {
+                                                $bookingIDs[] = $row["Booking_ID"];
+
                                                 echo "<tr>
-                                                <td>" . $n . "</td>
-                                                <td>" . $row["Booking_ID"] . "</td>
+                                                            <td>" . $n . "</td>
+                                                            <td>" . $row["Booking_ID"] . "</td>
                                                             <td>" . $row["payment"] . "</td>
                                                             <td>" . $row["meal_type"] . "</td>
                                                             <td>" . $row["checkin_date"] . "</td>
                                                             <td>" . $row["checkout_date"] . "</td>
-                                                          </tr>";
+                                                            <td><a class='btn btn-success' onclick='openBookingModal(" . $row["Booking_ID"] . ")'><i class='fas fa-edit'>Edit</i></a></td>
+                                                            <td><a class='btn btn-outline-danger' href='cancel-book.php?booking_id=" . $row["Booking_ID"] . "'><i class='fas fa-trash-alt'>Cancel</i></a></td>
+                                                            </tr>";
                                                 $n++;
                                             }
 
                                             echo "</tbody></table>";
-
                                             ?>
                                         </div>
 
@@ -246,6 +272,91 @@
             </div>
         </div>
     </section>
+
+    <div class="modal fade" id="bookingModal" tabindex="-1" role="dialog" aria-labelledby="bookingModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bookingModalLabel">Update Booking</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                        onclick="closeBookingModal()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <select class="form-control mt-2" name="type" id="mealType">
+                        <option selected> Select Meal Type</option>
+                        <option value="Breakfast">Breakfast</option>
+                        <option value="Launch">Launch</option>
+                        <option value="Dinner">Dinner</option>
+                        <option value="Breakfast-Launch">Breakfast and Launch</option>
+                    </select>
+                    <input type="date" class="form-control mt-2" id="checkOutDate" placeholder="Check-out Date"
+                        name="cdate">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                        onclick=" closeBookingModal();">Close</button>
+                    <button type="button" class="btn btn-danger"
+                        onclick="closeBookingModal(); redirectToBookPage()">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function togglePasswordEdit() {
+            document.getElementById('currentPassword').style.display = 'none';
+            document.getElementById('newPassword').style.display = 'block';
+            document.getElementById('editPasswordBtn').style.display = 'none';
+            document.getElementById('savePasswordBtn').style.display = 'block';
+        }
+
+        function saveNewPassword() {
+            var newPassword = document.getElementById('newPassword').value;
+
+            $.ajax({
+                type: 'POST',
+                url: 'update_passwordg.php',
+                data: { newPassword: newPassword },
+                success: function (response) {
+                    console.log(response);
+
+                    document.getElementById('currentPassword').innerText = newPassword;
+                    document.getElementById('currentPassword').style.display = 'block';
+                    document.getElementById('newPassword').style.display = 'none';
+                    document.getElementById('editPasswordBtn').style.display = 'block';
+                    document.getElementById('savePasswordBtn').style.display = 'none';
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
+        }
+
+        function openBookingModal(bookingId) {
+            $("#bookingModal").data('bookingId', bookingId);
+            $("#bookingModal").modal('show');
+        }
+
+        function closeBookingModal() {
+            $("#bookingModal").modal('hide');
+        }
+
+        function redirectToBookPage() {
+            var bookingId = $("#bookingModal").data('bookingId');
+            var mealType = encodeURIComponent(document.getElementById('mealType').value);
+            var originalDate = document.getElementById('checkOutDate').value;
+            var dateObject = new Date(originalDate);
+            var formattedDate = dateObject.toISOString().slice(0, 10);
+            var url = "update-book.php?booking_id=" + <?php echo $bookingIDs[0]; ?> + "&mealType=" + mealType + "&checkOutDate=" + formattedDate;
+            window.location.href = url;
+
+        }
+
+    </script>
+
+
     <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
