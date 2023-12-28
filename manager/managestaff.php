@@ -76,6 +76,9 @@ include '../tools/navbarhome.php'; ?>
                     ";
                     echo "ERROR: $insertQuery <br> $conn->error";
                 }
+
+                
+
             }
         }
 
@@ -84,7 +87,7 @@ include '../tools/navbarhome.php'; ?>
             if(isset($_POST['eventId'])){
                 $eventId = $_POST['eventId'];
 
-                $deleteQuery = "DELETE FROM `event` WHERE `event_ID` = '$eventId'";
+                $deleteQuery = "DELETE FROM `staff` WHERE staff_ID=$staffID";
                 
                 if($conn->query($deleteQuery) == true){
                     echo "
