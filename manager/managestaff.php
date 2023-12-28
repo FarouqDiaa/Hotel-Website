@@ -42,13 +42,26 @@ include '../tools/navbarhome.php'; ?>
                 $manager_ID = 1;
                 $username = $_POST['username'];
                 $password=$_POST['password'];
+                $type=$_POST['type'];
                 if($position==="Room Service")
-                 {$roomservice_id = $_POST['roomservice_id'];
+                 {
+                    $insertQuery = "INSERT INTO `staff`( `FName`, `LName`, `age`, `phone_number`, `position`, `salary`, `working_hours`,`manager_ID`, `username`, `roomservice_ID`) VALUES ('$FName','$LName','$age',' $phone','$position',$salary,$working_hours,$manager_ID,$username,$roomservice_id)";
+                    if($conn->query($insertQuery) == true)
+                    {
+                    
+                    }
+                    else 
+                    {
+                        
+                        echo "ERROR: $insertQuery <br> $conn->error";  
+                    }
+                    $insertQuery="UPDATE `staff` SET roomservice_ID= (SELECT max(staff_ID) FROM staff) WHERE username='$username';";
+                   
+                }
+                 else{
+                    $insertQuery = "INSERT INTO `staff`( `FName`, `LName`, `age`, `phone_number`, `position`, `salary`, `working_hours`,`manager_ID`, `username`) VALUES ('$FName','$LName','$age',' $phone','$position',$salary,$working_hours,$manager_ID,$username)";
                  }
-                 $type=$_POST['type'];
                 
-
-                $insertQuery = "INSERT INTO `staff`( `FName`, `LName`, `age`, `phone_number`, `position`, `salary`, `working_hours`,`manager_ID`, `username`, `roomservice_ID`) VALUES ('$FName','$LName','$age',' $phone','$position',$salary,$working_hours,$manager_ID,$username,$roomservice_id)";
                 $insertQuery2="INSERT INTO `account`(`username`, `password`, `type`) VALUES ('$username','$password','$type')";
                 if($conn->query($insertQuery) == true ){
                     if($conn->query($insertQuery2) == true)
@@ -81,8 +94,9 @@ include '../tools/navbarhome.php'; ?>
 
             }
         }
+    
 
-        // Remove Event
+        
         if(isset($_POST['removeEvent'])){
             if(isset($_POST['eventId'])){
                 $eventId = $_POST['eventId'];
