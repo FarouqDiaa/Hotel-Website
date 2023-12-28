@@ -110,7 +110,7 @@ include '../tools/navbar.php';
                     $staffID = $_POST['staffID'];
                     $newSalary = max(0, $_POST['newSalary']); // Ensure salary is not negative
 
-                    $updateSalaryQuery = "UPDATE staff SET salary = '$newSalary' WHERE staff_ID = '$staffID'";
+                    $updateSalaryQuery = "call UPDATESALARY($newSalary,$staffID)";
                     
                     if($conn->query($updateSalaryQuery)){
                         echo "

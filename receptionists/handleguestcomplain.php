@@ -19,7 +19,7 @@ include '../tools/navbar.php'; ?>
         margin-bottom: 50px;
      }
      .complaint-img {
-        margin-bottom: 20px; /* Adjust as needed */
+        margin-bottom: 20px; 
      }
      .complaint-text {
         margin-top: 10px;
@@ -48,7 +48,7 @@ include '../tools/navbar.php'; ?>
                 $response = $_POST['response'];
 
                 
-                $updateSql = "UPDATE `complain` SET `response` = '$response' WHERE `complain_ID` = $complaintId";
+                $updateSql = "call UPDATECOMPLAINTS( $response,$complaintId)";
                 if($conn->query($updateSql) == true){
                     echo "
                     <div class='alert alert-success' role='alert'>
