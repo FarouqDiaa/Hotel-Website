@@ -29,24 +29,51 @@ include '../tools/navbarhome.php'; ?>
 
 <body style="background-color: rgb(5,5,5);">
     <?php
-        // Add Event
-        if(isset($_POST['addEvent'])){
+        // Add staff
+        if(isset($_POST['addstaff'])){
             if(isset($_POST['eventName'], $_POST['eventDate'], $_POST['description'])){
-                $eventName = $_POST['eventName'];
-                $eventDate = $_POST['eventDate'];
-                $description = $_POST['description'];
-                $managerId = $_SESSION['id'];
-
-                $insertQuery = "INSERT INTO `event` (`event_name`, `eventDate`, `description`, `manager_ID`) 
-                                VALUES ('$eventName', '$eventDate', '$description', '$managerId')";
+                $FName = $_POST['FName'];
+                $LName = $_POST['LName'];
+                $age = $_POST['age'];
+                $phone = $_POST['phone_number'];
+                $position = $_POST['position'];
+                $salary = $_POST['salary'];
+                $working_hours=$_POST['working_hours'];
+                $manager_ID = 1;
+                $username = $_POST['username'];
+                $password=$_POST['password'];
+                if($position==="Room Service")
+                 {$roomservice_id = $_POST['roomservice_id'];
+                 }
+                 $type=$_POST['type'];
                 
-                if($conn->query($insertQuery) == true){
+
+                $insertQuery = "INSERT INTO `staff`( `FName`, `LName`, `age`, `phone_number`, `position`, `salary`, `working_hours`,`manager_ID`, `username`, `roomservice_ID`) VALUES ('$FName','$LName','$age',' $phone','$position',$salary,$working_hours,$manager_ID,$username,$roomservice_id)";
+                $insertQuery2="INSERT INTO `account`(`username`, `password`, `type`) VALUES ('$username','$password','$type')";
+                if($conn->query($insertQuery) == true ){
+                    if($conn->query($insertQuery2) == true)
+                    {
                     echo "
                     <div class='alert alert-success' role='alert'>
-                        Event added successfully!
+                        staff added successfully!
                     </div>
                     ";
+                    }
+                    else 
+                    {
+                        echo "
+                    <div class='alert alert-warning' role='alert'>
+                        staff addition failed
+                    </div>
+                    ";
+                        echo "ERROR: $insertQuery2 <br> $conn->error";  
+                    }
                 } else {
+                    echo "
+                    <div class='alert alert-warning' role='alert'>
+                        staff addition failed
+                    </div>
+                    ";
                     echo "ERROR: $insertQuery <br> $conn->error";
                 }
             }

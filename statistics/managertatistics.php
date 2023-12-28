@@ -16,6 +16,11 @@ $genderResult = $conn->query($genderQuery);
 $roomserviceQuery = "SELECT is_finished, COUNT(*) AS count FROM roomserviceorder GROUP BY is_finished;";
 $roomserviceResult = $conn->query($roomserviceQuery);
 
+
+
+
+
+
 ?>
 
 <!DOCTYPE html>
