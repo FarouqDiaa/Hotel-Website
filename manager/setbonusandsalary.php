@@ -127,7 +127,7 @@ include '../tools/navbar.php';
                     $staffID = $_POST['staffID'];
                     $newBonus = max(0, $_POST['newBonus']); // Ensure bonus is not negative
 
-                    $updateBonusQuery = "UPDATE staff SET bonus = '$newBonus' WHERE staff_ID = '$staffID'";
+                    $updateBonusQuery = "call UPDATEBONUS($newBonus,$staffID)";
                     
                     if($conn->query($updateBonusQuery)){
                         echo "

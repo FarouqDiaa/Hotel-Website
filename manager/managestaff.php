@@ -1,160 +1,199 @@
-<?php include '../tools/connection.php';
-include '../tools/navbarhome.php'; ?>
+<?php
+include '../tools/connection.php';
+include '../tools/navbar.php';
+
+if (isset($_POST['addStaff'])) {
+    $FName = $_POST['FName'];
+    $LName = $_POST['LName'];
+    $age = $_POST['age'];
+    $phone = $_POST['phone_number'];
+    $position = $_POST['position'];
+    $salary = $_POST['salary'];
+    $working_hours = $_POST['working_hours'];
+    $manager_ID = 1;
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $type = $_POST['type'];
+
+    if ($position === "Room Service") {
+        $insertQuery = "INSERT INTO `staff`(`FName`, `LName`, `age`, `phone_number`, `position`, `salary`, `working_hours`, `manager_ID`, `username`) VALUES ('$FName','$LName','$age',' $phone','$position',$salary,$working_hours,$manager_ID,'$username')";
+        if ($conn->query($insertQuery) == true) {
+        } else {
+            echo "ERROR: $insertQuery <br> $conn->error";
+        }
+        $insertQuery = "UPDATE `staff` SET roomservice_ID= (SELECT max(staff_ID) FROM staff) WHERE username='$username';";
+    } else {
+        $insertQuery = "INSERT INTO `staff`(`FName`, `LName`, `age`, `phone_number`, `position`, `salary`, `working_hours`, `manager_ID`, `username`) VALUES ('$FName','$LName','$age',' $phone','$position',$salary,$working_hours,$manager_ID,'$username')";
+    }
+
+    $insertQuery2 = "INSERT INTO `account`(`username`, `password`, `type`) VALUES ('$username','$password','$type')";
+    if ($conn->query($insertQuery) == true) {
+        if ($conn->query($insertQuery2) == true) {
+            echo "
+            <div class='alert alert-success' role='alert'>
+                Staff added successfully!
+            </div>
+            ";
+        } else {
+            echo "
+            <div class='alert alert-warning' role='alert'>
+                Staff addition failed
+            </div>
+            ";
+            echo "ERROR: $insertQuery2 <br> $conn->error";
+        }
+    } else {
+        echo "
+        <div class='alert alert-warning' role='alert'>
+            Staff addition failed
+        </div>
+        ";
+        echo "ERROR: $insertQuery <br> $conn->error";
+    }
+}
+
+if (isset($_POST['removeStaff'])) {
+    $staffIDToRemove = $_POST['staffIDToRemove'];
+    $deleteQuery = "call FIRESTAFF($staffIDToRemove)";
+
+    if ($conn->query($deleteQuery) == true) {
+        echo "
+        <div class='alert alert-success' role='alert'>
+            Staff removed successfully!
+        </div>
+        ";
+    } else {
+        echo "ERROR: $deleteQuery <br> $conn->error";
+    }
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
-<head> 
+
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Schedule Events</title>
+    <title>Manage Staff</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <style>
-        .event-box {
-            background-color: #f4f4f4;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            border-radius: 5px;
-            text-align: center;
-            margin-top: 50px;
-            margin-bottom: 50px;
-        }
-        .event-img {
-            margin-bottom: 20px; /* Adjust as needed */
-        }
-        .event-options {
-            margin-top: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="../icons/fontawesome/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:700%7CMontserrat:400,600" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="../css/style.css" />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
 </head>
+<link rel="stylesheet" href="../css/bootstrap.min.css">
+
+<style>
+    .navigation {
+        margin-top: 20px;
+    }
+
+    .staff-box {
+        background-color: #222;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        text-align: center;
+        margin-top: 50px;
+        margin-bottom: 50px;
+        color: #fff;
+    }
+
+    .staff-img {
+        margin-bottom: 20px;
+    }
+
+    .btn-danger,
+    .btn-success {
+        width: 150px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    /* Set background color of textboxes to white */
+    input[type="text"],
+    input[type="number"],
+    input[type="password"] {
+        background-color: #fff;
+    }
+</style>
 
 <body style="background-color: rgb(5,5,5);">
-    <?php
-        // Add staff
-        if(isset($_POST['addstaff'])){
-            if(isset($_POST['eventName'], $_POST['eventDate'], $_POST['description'])){
-                $FName = $_POST['FName'];
-                $LName = $_POST['LName'];
-                $age = $_POST['age'];
-                $phone = $_POST['phone_number'];
-                $position = $_POST['position'];
-                $salary = $_POST['salary'];
-                $working_hours=$_POST['working_hours'];
-                $manager_ID = 1;
-                $username = $_POST['username'];
-                $password=$_POST['password'];
-                if($position==="Room Service")
-                 {$roomservice_id = $_POST['roomservice_id'];
-                 }
-                 $type=$_POST['type'];
-                
-
-                $insertQuery = "INSERT INTO `staff`( `FName`, `LName`, `age`, `phone_number`, `position`, `salary`, `working_hours`,`manager_ID`, `username`, `roomservice_ID`) VALUES ('$FName','$LName','$age',' $phone','$position',$salary,$working_hours,$manager_ID,$username,$roomservice_id)";
-                $insertQuery2="INSERT INTO `account`(`username`, `password`, `type`) VALUES ('$username','$password','$type')";
-                if($conn->query($insertQuery) == true ){
-                    if($conn->query($insertQuery2) == true)
-                    {
-                    echo "
-                    <div class='alert alert-success' role='alert'>
-                        staff added successfully!
-                    </div>
-                    ";
-                    }
-                    else 
-                    {
-                        echo "
-                    <div class='alert alert-warning' role='alert'>
-                        staff addition failed
-                    </div>
-                    ";
-                        echo "ERROR: $insertQuery2 <br> $conn->error";  
-                    }
-                } else {
-                    echo "
-                    <div class='alert alert-warning' role='alert'>
-                        staff addition failed
-                    </div>
-                    ";
-                    echo "ERROR: $insertQuery <br> $conn->error";
-                }
-
-                
-
-            }
-        }
-
-        // Remove Event
-        if(isset($_POST['removeEvent'])){
-            if(isset($_POST['eventId'])){
-                $eventId = $_POST['eventId'];
-
-                $deleteQuery = "DELETE FROM `staff` WHERE staff_ID=$staffID";
-                
-                if($conn->query($deleteQuery) == true){
-                    echo "
-                    <div class='alert alert-success' role='alert'>
-                        Event removed successfully!
-                    </div>
-                    ";
-                } else {
-                    echo "ERROR: $deleteQuery <br> $conn->error";
-                }
-            }
-        }
-    ?>
-
     <div class="container1 text-center">
-        <!-- Event box -->
-        <div class="event-box">
-            <img src="../images/ninja.png" alt="Event Image" class="event-img" height="100px">
-            <h2>Manage Schedule Events</h2>
+        <div class="staff-box">
+            <img src="../images/ninja.png" alt="Staff Image" class="staff-img" height="100px">
+            <h2 style="color:ea4f4c;">Manage Staff</h2>
 
-            <!-- Add Event Form -->
             <form action="" method="post">
-                <div class="form-group event-options">
-                    <label for="eventName" class="p-2">Event Name:</label>
-                    <input type="text" class="form-control" name="eventName" placeholder="Enter Event Name" required>
+                <h3 class="p-3">Add Staff</h3>
+                <div class="form-group">
+                    <label for="firstName">First Name:</label>
+                    <input type="text" class="form-control" name="FName" required>
                 </div>
-                <div class="form-group event-options">
-                    <label for="eventDate" class="p-2">Event Date:</label>
-                    <input type="date" class="form-control" name="eventDate" required>
+                <div class="form-group">
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" class="form-control" name="LName" required>
                 </div>
-                <div class="form-group event-options">
-                    <label for="description" class="p-2">Description:</label>
-                    <textarea class="form-control" name="description" placeholder="Enter Event Description" required></textarea>
+                <div class="form-group">
+                    <label for="age">Age:</label>
+                    <input type="number" class="form-control" name="age" required>
                 </div>
-                <div class="con">
-                    <input type="submit" class="btn btn-danger p-2 m-4" value="Add Event" name="addEvent">
+                <div class="form-group">
+                    <label for="phone number">Phone number:</label>
+                    <input type="number" class="form-control" name="phone_number" required>
                 </div>
+                <div class="form-group">
+                    <label for="age">Position:</label>
+                    <input type="text" class="form-control" name="position" required>
+                </div>
+                <div class="form-group">
+                    <label for="age">Salary:</label>
+                    <input type="number" class="form-control" name="salary" required>
+                </div>
+                <div class="form-group">
+                    <label for="age">Working Hours:</label>
+                    <input type="number" class="form-control" name="working_hours" required>
+                </div>
+                <div class="form-group">
+                    <label for="age">Username:</label>
+                    <input type="text" class="form-control" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="age">Password:</label>
+                    <input type="password" class="form-control" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="age">Type:</label>
+                    <input type="text" class="form-control" name="type" required>
+                </div>
+                <button type="submit" class="btn btn-success" name="addStaff">Add Staff</button>
             </form>
 
-            <!-- Remove Event Form -->
             <form action="" method="post">
-                <div class="form-group event-options">
-                    <label for="eventId" class="p-2">Select Event:</label>
-                    <select class="form-control" name="eventId" required>
+                <h3 class="p-3">Remove Staff</h3>
+                <div class="form-group">
+                    <label for="staffIDToRemove">Select Staff ID to Remove:</label>
+                    <select class="form-control" name="staffIDToRemove" required>
                         <?php
-                            
-                            $eventsQuery = "SELECT * FROM `event`";
-                            $result = $conn->query($eventsQuery);
+                        $staffQuery = "SELECT staff_ID FROM staff";
+                        $staffResult = $conn->query($staffQuery);
 
-                            if ($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
-                                    $eventId = $row['event_ID'];
-                                    $eventName = $row['event_name'];
-
-                                    echo "<option value='$eventId'>$eventName</option>";
-                                }
-                            } else {
-                                echo "<option value=''>No events available</option>";
-                            }
+                        while ($row = $staffResult->fetch_assoc()) {
+                            $staffID = $row['staff_ID'];
+                            echo "<option value='$staffID'>$staffID</option>";
+                        }
                         ?>
                     </select>
                 </div>
-                <div class="con">
-                    <input type="submit" class="btn btn-danger p-2 m-4" value="Remove Event" name="removeEvent">
-                </div>
+
+                <button type="submit" class="btn btn-danger" name="removeStaff">Remove Staff</button>
+
             </form>
         </div>
     </div>
 </body>
+
 </html>

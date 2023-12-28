@@ -68,7 +68,7 @@ include '../tools/navbar.php'; ?>
         if (isset($_POST['eventId'])) {
             $eventId = $_POST['eventId'];
 
-            $deleteQuery = "DELETE FROM `event` WHERE `event_ID` = '$eventId'";
+            $deleteQuery = "call DeleteEvent($eventId)";
 
             if ($conn->query($deleteQuery) == true) {
                 echo "
