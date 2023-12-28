@@ -108,7 +108,6 @@ include '../tools/navbar.php'; ?>
                 </div>
             </form>
 
-            <!-- Remove Event Form -->
             <form action="" method="post">
                 <div class="form-group event-options">
                     <label for="eventId" class="p-2">Select Event:</label>

@@ -11,7 +11,7 @@ if (isset($_SESSION["usertype"]) && $_SESSION["usertype"] == 1) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rooms Dashboard</title>
+    <title>Staff Dashboard</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="icons/fontawesome/css/all.min.css">
     <link href="https://fonts.googleapis.com/css?family=Lato:700%7CMontserrat:400,600" rel="stylesheet">

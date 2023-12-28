@@ -23,13 +23,14 @@ $roomserviceResult = $conn->query($roomserviceQuery);
 
 <head>
 
-    <title>User Statistics</title>
+    <title>Statistics</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../icons/fontawesome/css/all.min.css">
     <link href="https://fonts.googleapis.com/css?family=Lato:700%7CMontserrat:400,600" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="../css/style.css" />
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Room Statistics</title>
@@ -37,7 +38,7 @@ $roomserviceResult = $conn->query($roomserviceQuery);
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .navigation {
-            margin-top: 20px;
+            margin-top: 30px;
         }
 
         body {
@@ -60,7 +61,7 @@ $roomserviceResult = $conn->query($roomserviceQuery);
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 800px;
+            margin-top: 1200px;
         }
 
 
@@ -83,6 +84,10 @@ $roomserviceResult = $conn->query($roomserviceQuery);
             max-width: 400px;
             height: auto;
         }
+
+        th {
+            color: white !important;
+        }
     </style>
 </head>
 
@@ -92,6 +97,7 @@ $roomserviceResult = $conn->query($roomserviceQuery);
     <div class="container text-center">
         <div class="statistics-container">
             <h2 style="color: white;">Statistics</h2>
+
 
             <div class="chart-pair">
                 <div class="chart-container">
@@ -111,8 +117,60 @@ $roomserviceResult = $conn->query($roomserviceQuery);
                 </div>
             </div>
             <br><br>
+            <div class="chart-pair">
+                <div class="chart-container">
+                    <canvas id="requestsChart" width="400" height="200"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3 style="color:white;">Select Guest ID:</h3>
+                    <br>
+                    <select id="guestIdComboBox" class="form-select">
+                        <?php
+                        $guestIdQuery = "SELECT DISTINCT guest_ID FROM booking";
+                        $guestIdResult = $conn->query($guestIdQuery);
+                        while ($row = $guestIdResult->fetch_assoc()) {
+                            echo "<option value='" . $row['guest_ID'] . "'>" . $row['guest_ID'] . "</option>";
+                        }
+                        ?>
+                    </select>
+                    <button class="btn btn-danger p-2 m-4" onclick="loadGuestBookings()">Load Bookings</button>
+                    <table class="table table-bordered" id="guestBookingsTable">
+                        <thead>
+                            <tr>
+                                <th>Booking ID</th>
+                                <th>Staff ID</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br>
             <div class="chart-container">
-                <canvas id="requestsChart" width="400" height="200"></canvas>
+                <br>
+                <h3 style="color:white;">Select Staff Position:</h3>
+                <br>
+                <select id="positionComboBox" class="form-select">
+                    <?php
+                    $positionQuery = "SELECT DISTINCT position FROM staff";
+                    $positionResult = $conn->query($positionQuery);
+                    while ($row = $positionResult->fetch_assoc()) {
+                        echo "<option value='" . $row['position'] . "'>" . $row['position'] . "</option>";
+                    }
+                    ?>
+                </select>
+                <button class="btn btn-danger p-2 m-4" onclick="loadStaffSalaries()">Load Salaries</button>
+                <table class="table table-bordered" id="staffSalariesTable">
+                    <thead>
+                        <tr>
+                            <th>Position</th>
+                            <th>Total Salary</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
             <script>
                 var ageData = <?php echo json_encode($ageResult->fetch_all(MYSQLI_ASSOC)); ?>;
@@ -227,6 +285,60 @@ $roomserviceResult = $conn->query($roomserviceQuery);
 
                 var requestsCtx = document.getElementById('requestsChart').getContext('2d');
                 createPieChart(requestsCtx, 'Requests Status', { labels: requestsData.map(entry => entry.is_finished == 1 ? 'Finished' : 'Not Finished'), values: requestsData.map(entry => entry.count) }, ['#4caf50', '#f44336'], 'Room Service Status');
+                function loadGuestBookings() {
+                    var guestId = document.getElementById('guestIdComboBox').value;
+                    var tableBody = document.getElementById('guestBookingsTable').getElementsByTagName('tbody')[0];
+
+                    $.ajax({
+                        type: 'POST',
+                        url: 'fetch_guest_bookings.php',
+                        data: { guestId: guestId },
+                        success: function (response) {
+                            var bookingsData = JSON.parse(response);
+                            tableBody.innerHTML = '';
+
+                            bookingsData.forEach(function (booking) {
+                                var newRow = tableBody.insertRow();
+                                var cell1 = newRow.insertCell(0);
+                                var cell2 = newRow.insertCell(1);
+
+                                cell1.innerHTML = booking['Booking_ID'];
+                                if (!booking['staff_ID']) {
+                                    booking['staff_ID'] = 'None';
+                                }
+                                cell2.innerHTML = booking['staff_ID'];
+                                cell1.style.color = 'white';
+                                cell2.style.color = 'white';
+                            });
+                        }
+                    });
+                }
+                function loadStaffSalaries() {
+                    var position = document.getElementById('positionComboBox').value;
+                    var staffSalariesTableBody = document.getElementById('staffSalariesTable').getElementsByTagName('tbody')[0];
+
+                    $.ajax({
+                        type: 'POST',
+                        url: 'fetch_staff_salaries.php',
+                        data: { position: position },
+                        success: function (response) {
+                            var staffSalariesData = JSON.parse(response);
+                            staffSalariesTableBody.innerHTML = '';
+
+                            staffSalariesData.forEach(function (staff) {
+                                var newRow = staffSalariesTableBody.insertRow();
+                                var cell1 = newRow.insertCell(0);
+                                var cell2 = newRow.insertCell(1);
+
+                                cell1.innerHTML = staff['position'];
+                                cell2.innerHTML = staff['total_salary'];
+
+                                cell1.style.color = 'white';
+                                cell2.style.color = 'white';
+                            });
+                        }
+                    });
+                }
             </script>
         </div>
     </div>
