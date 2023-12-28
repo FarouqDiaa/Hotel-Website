@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 27, 2023 at 02:04 PM
+-- Generation Time: Dec 28, 2023 at 06:37 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,94 @@ SET time_zone = "+00:00";
 --
 -- Database: `hotel`
 --
+
+DELIMITER $$
+--
+-- Procedures
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `BOOKROOM` (IN `pay` INT, IN `meal` VARCHAR(20), IN `checkin` DATE, IN `checkout` DATE, IN `guestId` INT, IN `type` INT, IN `staffid` INT)   BEGIN
+    IF type = 0 THEN
+        INSERT INTO `booking` (`payment`, `meal_type`, `checkin_date`, `checkout_date`, `guest_ID`) VALUES
+(pay, meal, checkin, checkout, adress, guestId);
+        INSERT INTO `book_room`(`Room_ID`, `Booking_ID`) VALUES
+(room_id,(SELECT max(Booking_ID) FROM booking));
+    ELSE
+        INSERT INTO `booking` (`payment`, `meal_type`, `checkin_date`, `checkout_date`, `staff_ID`, `guest_ID`) VALUES
+(pay, meal, checkin, checkout, adress, staffID, guestId);
+        INSERT INTO `book_room`(`Room_ID`, `Booking_ID`) VALUES 
+(room_id,(SELECT max(Booking_ID) FROM booking));
+    END IF;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `CANCELBOOK` (IN `bookingid` INT(20), IN `checkoutdate` DATE)   BEGIN 
+    DECLARE CIN DATE;
+    DELETE FROM book_room 
+    WHERE Booking_ID = bookingid;
+    SELECT checkin_date 
+    INTO CIN
+    FROM booking
+    WHERE Booking_ID = bookingid;
+    IF CIN IS NULL THEN
+        UPDATE `booking` 
+        SET `checkout_date` = NULL 
+        WHERE Booking_ID = bookingid;
+    ELSE 
+        UPDATE `booking` 
+        SET `checkout_date` = checkoutdate 
+        WHERE Booking_ID = bookingid;
+    END IF;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `DeleteEvent` (IN `eventId` INT(20))   BEGIN
+DELETE FROM `event` WHERE `event_ID` = eventId;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `FIRESTAFF` (IN `staffid` INT)   BEGIN
+	DELETE FROM `staff`
+	WHERE staff_ID = staffid;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ManageEvents` (IN `eventName` VARCHAR(40), IN `eventDate` DATE, IN `description` VARCHAR(40), IN `managerId` INT(20))   BEGIN
+INSERT INTO `event` (`event_name`, `eventDate`, `description`, `manager_ID`) 
+                                VALUES (eventName, eventDate, description, managerId);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UPDATEBONUS` (IN `bonusin` INT, IN `staffid` INT)   BEGIN
+	UPDATE `staff`
+	SET bonus = bonusin
+	WHERE staff_ID = staffid;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UPDATECHECKDATES` (IN `checkout` DATE, IN `checkin` DATE, IN `bookingid` INT)   BEGIN
+	UPDATE `booking`
+	SET checkin_date = checkin,
+	checkout_date = checkout
+	WHERE booking_ID = bookingid;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UPDATECOMPLAINTS` (IN `responsein` VARCHAR(100), IN `guestid` INT)   BEGIN
+	UPDATE `complain`
+	SET repsone = responsein
+	WHERE guest_ID = guestid;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UPDATESALARY` (IN `salaryin` INT, IN `staffid` INT)   BEGIN
+	UPDATE `staff`
+	SET salary = salaryin
+	WHERE staff_ID = staffid;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `VIEWBOOKING` (IN `guestid` INT, IN `type` INT)   BEGIN
+    IF type = 0 THEN
+        SELECT * FROM `booking` WHERE `guest_ID` = guestid;
+    ELSE
+        SELECT br.`Booking_ID`, `payment`, `meal_type`, `checkin_date`, `checkout_date`, `staff_ID`, `guest_ID` 
+        FROM `booking` b, `book_room` br 
+        WHERE br.Booking_ID = b.Booking_ID;
+    END IF;
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -38,14 +126,25 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`username`, `password`, `type`) VALUES
+('AhmedAbdulrahman', 'AhmedAbdulrahman1', 2),
 ('AhmedAli', 'AhmedAli', 3),
+('AhmedMohamed', 'Ahmed..Mohamed', 0),
+('AmrHassan', 'amrhasssan', 0),
+('BasmaMohamed', '@1BasmaMohamed', 2),
 ('eyadayman', 'eyadayman', 0),
 ('farouqfarouq', 'farouqfarouq', 0),
+('FatimaMoahmed', 'Fatima2.Mohamed', 0),
+('guest1', '$2y$10$wm2R0J0LvSgYq/3U.L5P8OBrhmCT0tPiI', 0),
+('KhaledSaid', 'KhaledSaid', 1),
+('LinaMahmoud', 'Lina.Mahmoud', 2),
 ('LoaySherief', 'LoaySherief', 2),
 ('mahmoud_21', 'mahmoud_21', 0),
 ('MansourMansour\r\n', 'MansourMansour', 1),
 ('MarwaHossam', 'MarwaHossam', 2),
+('NadiaGamall', 'NadiaGamall', 0),
 ('nohasamy', 'nohasamy', 0),
+('NourHassan', 'Nour_Hassan', 1),
+('OmarAli', 'OMARALI', 2),
 ('rawanosama', 'rawanosama', 0),
 ('SamaMassoud', 'SamaMassoud', 1),
 ('samisayed', 'samisayed', 0);
@@ -71,12 +170,16 @@ CREATE TABLE `booking` (
 --
 
 INSERT INTO `booking` (`Booking_ID`, `payment`, `meal_type`, `checkin_date`, `checkout_date`, `staff_ID`, `guest_ID`) VALUES
-(1, NULL, 'Breakfast', '2023-12-12', '2023-12-21', 2, 1),
-(2, NULL, 'Lunch', '2024-12-04', '2024-12-23', 1, 2),
-(3, NULL, 'Dinner', '2024-02-07', '2024-03-19', 4, 3),
-(4, NULL, 'Breakfast-Lunch', '2023-12-15', '2024-05-22', 1, 4),
-(5, NULL, 'Breakfast', '2023-12-05', '2023-12-21', 4, 5),
-(6, NULL, 'Lunch', '2023-12-20', '2023-12-25', 3, 6);
+(1, 200, 'Breakfast', '2023-12-12', '2023-12-21', 2, 1),
+(2, 300, 'Lunch', '2024-12-04', '2024-12-23', 1, 2),
+(3, 100, 'Dinner', '2024-02-07', '2024-03-19', 4, 3),
+(4, 150, 'Breakfast-Lunch', '2023-12-15', '2024-05-22', 1, 4),
+(5, 400, 'Breakfast', '2023-12-05', '2023-12-21', 4, 5),
+(6, 350, 'Lunch', '2023-12-20', '2024-01-01', 3, 6),
+(10, 100, 'Launch', '2023-12-27', '2024-01-05', NULL, 10),
+(11, 300, 'launch', '2022-11-11', '2022-11-20', NULL, 7),
+(12, 250, 'breakfast', '2023-02-02', '2023-02-16', NULL, 8),
+(13, 250, 'breakfast', '2023-02-16', '2023-03-16', NULL, 9);
 
 -- --------------------------------------------------------
 
@@ -99,7 +202,8 @@ INSERT INTO `book_room` (`Room_ID`, `Booking_ID`) VALUES
 (3, 3),
 (4, 4),
 (5, 5),
-(6, 6);
+(6, 6),
+(7, 10);
 
 -- --------------------------------------------------------
 
@@ -137,7 +241,8 @@ CREATE TABLE `event` (
 INSERT INTO `event` (`event_ID`, `event_name`, `eventDate`, `description`, `manager_ID`) VALUES
 (1, 'Concert', '2023-10-15', 'Holiday Party', 1),
 (2, 'Conference', '2023-11-27', 'AI in Healthcare', 1),
-(3, 'Networking Event', '2023-12-06', 'Project Management Skills', 1);
+(5, 'ca', '2024-12-12', 'LEARN CMP', 1),
+(6, 'cairokee', '2024-01-01', 'amir', 1);
 
 -- --------------------------------------------------------
 
@@ -184,7 +289,11 @@ INSERT INTO `guest` (`guest_ID`, `passport_ID`, `nationality`, `phone`, `email`,
 (3, 20207092101567, 'EGYPT', '01225899467', 'farouqfarouq@gmail.com', 'giza', 'farouq', 'diaa', 'M', 50, 4220123),
 (4, 20208042101562, 'EGYPT', '01025979641', 'mahmoud_21@gmail.com', 'helwan', 'mahmoud', 'aly', 'M', 62, 4220141),
 (5, 20204042101960, 'EGYPT', '01525899441', 'eyadayman@gmail.com', 'haram', 'Eyad', 'Ayman', 'M', 16, 4220111),
-(6, 20208048901518, 'EGYPT', '01225979561', 'rawanosama@gmail.com', 'ainhelwan', 'Rawan', 'Osama', 'F', 27, 4220115);
+(6, 20208048901518, 'EGYPT', '01225979561', 'rawanosama@gmail.com', 'ainhelwan', 'Rawan', 'Osama', 'F', 27, 4220115),
+(7, 30401234567819, 'Egypt', '01234567322', 'ahmedmohamed@gmail.com', 'Cairo', 'Ahmed', 'Mohamed', 'M', 30, 9874321),
+(8, 30201234567890, 'Egypt', '01023345678', 'fatimamohamed@gmail.com', '6 October', 'Fatima', 'Mohamed', 'F', 25, 4873210),
+(9, 30405060102604, 'Egypt', '01134389012', 'amrhassan@gmail.com', 'Giza', 'Amr', 'Hassan', 'M', 35, 4232109),
+(10, 30408729836637, 'Egypt', '01545780123', 'nadiagamal@gmail.com', 'Zayed', 'Nadia', 'Gamal', 'F', 28, 6543210);
 
 -- --------------------------------------------------------
 
@@ -194,7 +303,7 @@ INSERT INTO `guest` (`guest_ID`, `passport_ID`, `nationality`, `phone`, `email`,
 
 CREATE TABLE `has_account` (
   `username` varchar(100) NOT NULL,
-  `guest_ID` int(20) DEFAULT NULL
+  `guest_ID` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -207,7 +316,11 @@ INSERT INTO `has_account` (`username`, `guest_ID`) VALUES
 ('farouqfarouq', 3),
 ('mahmoud_21', 4),
 ('eyadayman', 5),
-('rawanosama', 6);
+('rawanosama', 6),
+('AhmedMohamed', 7),
+('FatimaMoahmed', 8),
+('AmrHassan', 9),
+('NadiaGamall', 10);
 
 -- --------------------------------------------------------
 
@@ -281,6 +394,13 @@ CREATE TABLE `request_service` (
   `service_ID` int(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `request_service`
+--
+
+INSERT INTO `request_service` (`guest_ID`, `service_ID`) VALUES
+(1, 2);
+
 -- --------------------------------------------------------
 
 --
@@ -302,14 +422,14 @@ CREATE TABLE `room` (
 --
 
 INSERT INTO `room` (`Room_ID`, `room_pic`, `room_desription`, `num of beds`, `PricePerNight`, `avalability`, `capacity`) VALUES
-(1, NULL, 'Classic Single Room:Step into comfort with our Classic Single Room. Warm, earthy tones welcome you as you unwind in a cozy space designed for solo travelers. Enjoy modern amenities and a tranquil atmosphere after a day of exploration.', 2, 1500, 0, 4),
-(2, NULL, 'Deluxe Double Room:Indulge in the spacious elegance of our Deluxe Double Room. Ideal for couples or close friends, this room offers a harmonious blend of comfort and style. Relax in the plush bedding and relish the inviting ambiance.', 1, 1200, 0, 2),
-(3, NULL, 'Executive Suite:Experience luxury in our Executive Suite, where sophistication meets comfort. This expansive space features a separate living area, ensuring a lavish stay for both business and leisure travelers. Unwind in style with premium amenities at your fingertips.', 3, 2800, 0, 6),
-(4, NULL, 'Family Friendly Suite:Perfect for families, our Family Friendly Suite provides a welcoming environment for everyone. Thoughtfully designed with ample space, it includes a dedicated area for the kids, allowing the whole family to enjoy a memorable stay together.', 1, 1100, 0, 2),
-(5, NULL, 'Modern Business Room:Stay productive and comfortable in our Modern Business Room. Designed with the needs of business travelers in mind, this room boasts a well-equipped workspace and high-speed internet, ensuring a seamless blend of work and relaxation.', 2, 1600, 0, 4),
-(6, NULL, NULL, 3, 4200, 0, 6),
-(7, NULL, 'Contemporary Loft:For a unique and stylish experience, choose our Contemporary Loft. With its modern design and open layout, this room offers a chic urban escape. Relax in the trendy ambiance and enjoy the artistic flair of your surroundings.', 2, 1700, 1, 4),
-(8, NULL, 'Panoramic View Room:Wake up to breathtaking vistas in our Panoramic View Room. Perched high above the city, this room offers sweeping views of the surroundings. Whether day or night, immerse yourself in the beauty of your surroundings from the comfort of your private oasis.', 1, 1250, 1, 2);
+(1, 'single.jpg', 'Classic Single Room:Step into comfort with our Classic Single Room.', 1, 1500, 0, 1),
+(2, 'single.jpg', 'Deluxe Double Room:Indulge in the spacious elegance of our Deluxe Double Room.', 1, 1200, 0, 2),
+(3, 'double.jpg', 'Executive Suite:Experience luxury in our Executive Suite, where sophistication meets comfort.', 3, 2800, 0, 6),
+(4, 'single.jpg', 'Family Friendly Suite:Perfect for families, our Family Friendly Suite provides a welcoming environment for everyone. ', 1, 1100, 0, 2),
+(5, 'double.jpg', 'Modern Business Room:Stay productive and comfortable in our Modern Business Room. Designed with the needs of business travelers in mind, this room boasts a well-equipped workspace and high-speed internet, ensuring a seamless blend of work and relaxation.', 2, 1600, 0, 4),
+(6, 'double.jpg', NULL, 3, 4200, 0, 6),
+(7, 'double.jpg', 'Contemporary Loft:For a unique and stylish experience, choose our Contemporary Loft. With its modern design and open layout, this room offers a chic urban escape. Relax in the trendy ambiance and enjoy the artistic flair of your surroundings.', 2, 1700, 1, 4),
+(8, 'single.jpg', 'Panoramic View Room:Wake up to breathtaking vistas in our Panoramic View Room. Perched high above the city, this room offers sweeping views of the surroundings. Whether day or night, immerse yourself in the beauty of your surroundings from the comfort of your private oasis.', 1, 1250, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -358,18 +478,17 @@ CREATE TABLE `sponser` (
   `start_date` date DEFAULT NULL,
   `end_date` date DEFAULT NULL,
   `sponser_type` varchar(40) DEFAULT NULL,
-  `manager_ID` int(20) NOT NULL
+  `manager_ID` int(20) NOT NULL,
+  `pic` varchar(70) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `sponser`
 --
 
-INSERT INTO `sponser` (`sponserName`, `start_date`, `end_date`, `sponser_type`, `manager_ID`) VALUES
-('Airline Inc.', '2023-06-01', '2023-12-31', 'Travel Partner', 1),
-('Event Planners', '2023-11-01', '2024-01-31', 'Event Management', 1),
-('Local Restaurant', '2023-10-20', '2024-06-20', 'Catering Partner', 1),
-('Tech Solutions', '2023-07-01', '2024-06-30', 'IT Provider', 1);
+INSERT INTO `sponser` (`sponserName`, `start_date`, `end_date`, `sponser_type`, `manager_ID`, `pic`) VALUES
+('Double Dare', '2023-06-01', '2023-12-31', 'Drink', 1, 'dd-sponsor.jpg'),
+('V7', '2023-11-01', '2024-01-31', 'Drink', 1, 'v7-sponsor.jpg');
 
 -- --------------------------------------------------------
 
@@ -398,9 +517,14 @@ CREATE TABLE `staff` (
 
 INSERT INTO `staff` (`staff_ID`, `FName`, `LName`, `age`, `phone_number`, `position`, `salary`, `working_hours`, `bonus`, `manager_ID`, `username`, `roomservice_ID`) VALUES
 (1, 'Mazen', 'Mansour', 36, '01036567372', 'Room Service', 5000, 8, NULL, 1, 'MansourMansour', 1),
-(2, 'Sama', 'Massoud', 31, '01126723832', 'Room Service', 5500, 6, NULL, 1, 'SamaMassoud', 2),
+(2, 'Sama', 'Massoud', 31, '01126723832', 'Room Service', 5500, 6, 90, 1, 'SamaMassoud', 2),
 (3, 'Marwa', 'Hossam', 32, '01267489489', 'Receptionist', 4900, 14, NULL, 1, 'MarwaHossam', NULL),
-(4, 'Loay', 'Sherief', 40, '01578478478', 'Receptionist', 4600, 14, NULL, 1, 'LoaySherief', NULL);
+(4, 'Loay', 'Sherief', 40, '01578478478', 'Receptionist', 4600, 14, NULL, 1, 'LoaySherief', NULL),
+(5, 'Ahmed', 'Abdulrahman', 30, '01236789110', 'Receptionist', 5000, 13, NULL, 1, 'AhmedAbdulrahman', NULL),
+(6, 'Basma', 'Mohammed', 25, '01015678901', 'Receptionist', 3000, 15, NULL, 1, 'BasmaMohamed', NULL),
+(7, 'Khaled', 'Said', 35, '01134589012', 'Room Service', 2000, 20, NULL, 1, 'KhaledSaid', NULL),
+(8, 'Nour', 'Hassan', 28, '01545690123', 'Room Service', 2500, 20, NULL, 1, 'NourHassan', NULL),
+(9, 'Omar', 'Ali', 32, '01156789234', 'Receptionist', 4000, 15, NULL, 1, 'OmarAli', NULL);
 
 --
 -- Indexes for dumped tables
@@ -535,7 +659,7 @@ ALTER TABLE `staff`
 -- AUTO_INCREMENT for table `booking`
 --
 ALTER TABLE `booking`
-  MODIFY `Booking_ID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `Booking_ID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `complain`
@@ -547,7 +671,7 @@ ALTER TABLE `complain`
 -- AUTO_INCREMENT for table `event`
 --
 ALTER TABLE `event`
-  MODIFY `event_ID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `event_ID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `feedback`
@@ -559,7 +683,7 @@ ALTER TABLE `feedback`
 -- AUTO_INCREMENT for table `guest`
 --
 ALTER TABLE `guest`
-  MODIFY `guest_ID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `guest_ID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `room`
@@ -577,7 +701,7 @@ ALTER TABLE `service`
 -- AUTO_INCREMENT for table `staff`
 --
 ALTER TABLE `staff`
-  MODIFY `staff_ID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `staff_ID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Constraints for dumped tables
