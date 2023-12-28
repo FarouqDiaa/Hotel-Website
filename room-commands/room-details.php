@@ -12,14 +12,14 @@ if (isset($_GET['status'])) {
     $status = $_GET['status'];
 
     if ($status === 'success') {
-        echo "<br><br><div class='alert alert-success' role='alert'>Successfully Booked!</div>";
+        echo "<br><div class='alert alert-success' role='alert'>Successfully Booked!</div>";
     } elseif ($status === 'error') {
         $message = urldecode($_GET['message']);
-        echo "<br><br><div class='alert alert-warning' role='alert'>Error booking this room: $message</div>";
+        echo "<br><div class='alert alert-warning' role='alert'>Error booking this room: $message</div>";
     } elseif ($status === 'already_booked') {
-        echo "<br><br><div class='alert alert-warning' role='alert'>You already booked this room.</div>";
+        echo "<br><div class='alert alert-warning' role='alert'>This room is already booked.</div>";
     } elseif ($status === 'invalid_rid') {
-        echo "<br><br><div class='alert alert-warning' role='alert'>Invalid Room ID.</div>";
+        echo "<br><div class='alert alert-warning' role='alert'>Invalid Room ID.</div>";
     }
 }
 

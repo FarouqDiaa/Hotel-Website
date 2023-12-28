@@ -202,10 +202,6 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["us
       <li class='parent'>
       <a class='link' href='user-options/logout.php'>Log Out</a>
       </li>
-      <li class='parent'>
-      <a class='link' href='user-options/staff-profile.php?id=". $_SESSION["id"]."'>
-              <img src='images/user.png' height='40vh' alt='user'>
-      </a></li>
     </ul>
     </div>
     </div>
@@ -235,10 +231,6 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["us
                   <li class='parent'>
                       <a class='link' href='user-options/logout.php'>Log Out</a>
                   </li>
-                  <li class='parent'>
-                  <a class='link' href='user-options/staff-profile.php?id=". $_SESSION["id"]."'>
-                          <img src='images/user.png' height='30vh' alt='user'>
-                  </a></li>
       </ul>
               
       </div>
