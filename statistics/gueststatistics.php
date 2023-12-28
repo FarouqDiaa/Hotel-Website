@@ -123,7 +123,6 @@ $capacityResult = $conn->query($capacityQuery);
                     }
                 });
 
-                // Average Price per Night Chart
                 var priceData = <?php echo json_encode($priceResult->fetch_all(MYSQLI_ASSOC)); ?>;
                 var priceCtx = document.getElementById('priceChart').getContext('2d');
                 var priceChart = new Chart(priceCtx, {

@@ -64,6 +64,7 @@
                 if($pass=== $row['password']){
                     $_SESSION['loggedin'] = true;
                     $_SESSION['username'] = $username;
+                    $_SESSION['password'] = $row['password'];
                     if($row['type'] == 0){
                         $sql2 = "SELECT * FROM `has_account` WHERE `username` = '$username'";
                         $result2 = $conn->query($sql2);
@@ -77,6 +78,7 @@
                         $row3 = $result3->fetch_assoc();
                         $_SESSION['id'] = $row3['manager_ID'] ;
                         $_SESSION['usertype'] = 3;
+
                     }else{
                         $sql4 = "SELECT * FROM `staff` WHERE `username` = '$username'";
                         $result4 = $conn->query($sql4);

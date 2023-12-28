@@ -14,7 +14,17 @@ if (isset($_POST['addStaff'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
     $type = $_POST['type'];
+    $startsWith1 = "012";
+    $startsWith2 = "010";
+    $startsWith3 = "011";
+    $startsWith4 = "015";    
 
+    if (strlen($phone)===11 && (substr( $phone, 0, strlen($startsWith1)) === $startsWith1 || substr( $phone, 0, strlen($startsWith2)) === $startsWith2 || substr( $phone, 0, strlen($startsWith3)) === $startsWith3 || substr( $phone, 0, strlen($startsWith4)) === $startsWith4))
+{ 
+    if($age>17)
+ {
+    if($salary>0 && $working_hours>0)
+    {
     if ($position === "Room Service") {
         $insertQuery = "INSERT INTO `staff`(`FName`, `LName`, `age`, `phone_number`, `position`, `salary`, `working_hours`, `manager_ID`, `username`) VALUES ('$FName','$LName','$age',' $phone','$position',$salary,$working_hours,$manager_ID,'$username')";
         if ($conn->query($insertQuery) == true) {
@@ -51,10 +61,43 @@ if (isset($_POST['addStaff'])) {
         echo "ERROR: $insertQuery <br> $conn->error";
     }
 }
+else 
+ {
+    echo "
+                <div class='alert alert-warning' role='alert'>
+                   please enter valid working hours or salary  
+                </div>
+                ";
+
+ }
+}
+else
+{
+    echo "
+                <div class='alert alert-warning' role='alert'>
+                    people with Age less than 18 not allowable to make register in this hotel  
+                </div>
+                ";
+}
+    
+}
+
+
+
+else
+{
+    echo "
+    <div class='alert alert-warning' role='alert'>
+       Please enter valid number
+    </div>
+    ";  
+}  
+
+}
 
 if (isset($_POST['removeStaff'])) {
     $staffIDToRemove = $_POST['staffIDToRemove'];
-    $deleteQuery = "call FIRESTAFF($staffIDToRemove)";
+    $deleteQuery = "DELETE FROM `staff` WHERE staff_ID=$staffIDToRemove";
 
     if ($conn->query($deleteQuery) == true) {
         echo "
@@ -63,6 +106,12 @@ if (isset($_POST['removeStaff'])) {
         </div>
         ";
     } else {
+        echo "
+        <div class='alert alert-success' role='alert'>
+            Staff removed failed!
+        </div>
+        ";
+       
         echo "ERROR: $deleteQuery <br> $conn->error";
     }
 }

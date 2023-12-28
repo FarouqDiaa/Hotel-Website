@@ -11,20 +11,22 @@ $row = $result->fetch_assoc();
 if (isset($_GET['status'])) {
     $status = $_GET['status'];
 
+    $messages = [
+        'success' => 'Successfully Booked!',
+        'error' => 'Error booking this room: ' . urldecode($_GET['message']),
+        'already_booked' => 'This room is already booked.',
+        'invalid_rid' => 'Invalid Room ID.',
+    ];
+
+    $alertClass = 'alert-warning';
     if ($status === 'success') {
-        echo "<br><br><div class='alert alert-success' role='alert'>Successfully Booked!</div>";
-    } elseif ($status === 'error') {
-        $message = urldecode($_GET['message']);
-        echo "<br><br><div class='alert alert-warning' role='alert'>Error booking this room: $message</div>";
-    } elseif ($status === 'already_booked') {
-        echo "<br><br><div class='alert alert-warning' role='alert'>You already booked this room.</div>";
-    } elseif ($status === 'invalid_rid') {
-        echo "<br><br><div class='alert alert-warning' role='alert'>Invalid Room ID.</div>";
+        $alertClass = 'alert-success';
     }
+
+    echo "<br><div class='alert $alertClass' role='alert'>" . $messages[$status] . "</div>";
 }
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -89,6 +91,18 @@ if (isset($_GET['status'])) {
                     </button>
                 </div>
                 <div class="modal-body">
+                    <?php if ($_SESSION['id'] == 3 || $_SESSION['id'] == 2): ?>
+                        <select class="form-control mt-2" name="guestSelector" id="guestSelector">
+                            <?php
+                            $guestQuery = "SELECT * FROM guest";
+                            $guestResult = $conn->query($guestQuery);
+
+                            while ($guestRow = $guestResult->fetch_assoc()) {
+                                echo "<option value='{$guestRow['guest_ID']}'>{$guestRow['FName']} {$guestRow['LName']}</option>";
+                            }
+                            ?>
+                        </select>
+                    <?php endif; ?>
                     <select class="form-control mt-2" name="type" id="mealType">
                         <option selected> Select Meal Type</option>
                         <option value="Breakfast">Breakfast</option>
@@ -119,7 +133,8 @@ if (isset($_GET['status'])) {
 
         function closeBookingModal() {
             $("#bookingModal").modal('hide');
-        } 
+        }
+
         function redirectToBookPage(roomId) {
             var mealType = encodeURIComponent(document.getElementById('mealType').value);
             var originalDate = document.getElementById('checkOutDate').value;
@@ -132,10 +147,13 @@ if (isset($_GET['status'])) {
 
             var url = "book.php?rid=" + roomId + "&mealType=" + mealType + "&checkOutDate=" + formattedDate + "&duration=" + daysDifference;
 
-            window.location.href = url;
-        }
+            <?php if ($_SESSION['id'] == 3 || $_SESSION['id'] == 2): ?>
+                var guestId = document.getElementById('guestSelector').value;
+                url += "&guestId=" + guestId;
+            <?php endif; ?>
 
-    </script>
+            window.location.href = url;
+        }    </script>
 
 </body>
 
