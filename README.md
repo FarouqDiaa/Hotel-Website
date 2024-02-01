@@ -13,8 +13,8 @@ This project requires the following dependencies to be installed:
 
 To install the project, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/your-username/Ninja-Hotel.git`
-2. Navigate to the project directory: `cd Ninja-Hotel`
+1. Clone the repository: `git clone https://github.com/your-username/Hotel-Website.git`
+2. Navigate to the project directory: `cd Hotel-Website`
 3. Create a build directory: `mkdir build && cd build`
 4. Run CMake to generate the build files: `cmake ..`
 5. Build the project: `make`
@@ -25,7 +25,7 @@ To use the website, do the following :
 
 - open Xampp and activate Apache and MySQL
 - put the project in following directory C:\xampp\htdocs.
-- write in url http://localhost/project-name/index.php
+- write in url http://localhost/Hotel-Website/index.php
   
 
 ## Features
