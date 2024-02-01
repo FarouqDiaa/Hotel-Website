@@ -29,10 +29,10 @@ To use the website, do the following :
   
 
 ## Features
--A guest can book room, change booking details, cancel reservation, view his current and past booking, request room service, make feedback, rate rooms, make complain ,view his profile and delete it. 
--A receptionist can cancel guest reservation, handle guest complain, handle check-in and check-out, manage room service, view all guest bookings.
--The manager can organize and schedule events, manage staff, set staff salaries, track sponsership deals.
--The website has stats about the average age of each category, and average salary, and the percentage of male and female, and total salary for each position.
+- A guest can book room, change booking details, cancel reservation, view his current and past booking, request room service, make feedback, rate rooms, make complain ,view his profile and delete it. 
+- A receptionist can cancel guest reservation, handle guest complain, handle check-in and check-out, manage room service, view all guest bookings.
+- The manager can organize and schedule events, manage staff, set staff salaries, track sponsership deals.
+- The website has stats about the average age of each category, and average salary, and the percentage of male and female, and total salary for each position.
 
 ## Contributing
 
